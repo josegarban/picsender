@@ -21,11 +21,11 @@ This script will get datasheets and pictures from a folder to create or update a
     # Select how search text will be sourced
 
     # Get folder name
-    if sourcetype == "folder":
-        folder = ""
-        print("Insert the folder absolute path. If it's the same folder as this script, hit ""Enter"".")
-        folder = input("")
-        output_dict ["sourcetype"] = (sourcetype, folder)
+    # if sourcetype == "folder":
+    #     folder = ""
+    #     print("Insert the folder absolute path. If it's the same folder as this script, hit ""Enter"".")
+    #     folder = input("")
+    #     output_dict ["sourcetype"] = (sourcetype, folder)
 
     # Output generation
     while outputtype not in ("1", "2"):

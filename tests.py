@@ -1,3 +1,4 @@
+import main
 import xlstolist, xlsxtolist
 from pprint import pprint
 
@@ -42,7 +43,7 @@ def test_get_otherrows(filenames, input_sheetname = ""):
     print("")
 
 
-test_get_firstrow(FILENAMES, input_sheetname = "Feuille1")
-
-test_get_otherrows(FILENAMES, input_sheetname = "Feuille1") 
+#test_get_firstrow(FILENAMES, input_sheetname = "Feuille1")
+#test_get_otherrows(FILENAMES, input_sheetname = "Feuille1") 
  
+main.populate_db()
