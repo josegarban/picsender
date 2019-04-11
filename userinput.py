@@ -36,7 +36,6 @@ This script will get datasheets and pictures from a folder to create or update a
 
     if outputtype == "1":
         outputfile = "current.sqlite"
-        print("Insert filename or path without the .sqlite extension")
         outputname = input_filename()
 
     elif outputtype == "2":
