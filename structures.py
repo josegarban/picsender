@@ -250,7 +250,7 @@ def listlist_to_dictdict (input_list, fieldname_list = ""):
     """
     output_dict = {}
 
-    if fieldname_list = "":
+    if fieldname_list == "":
         fieldnames = input_list[0]
         data_list = input_list [1:]
 

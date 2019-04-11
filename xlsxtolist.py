@@ -17,7 +17,7 @@ def get_firstrow (filename, input_sheetname = ""):
         for row in ws.iter_rows(min_row=0, max_row=1, values_only=True):
             for cell in row:
                 output_list.append(cell)
-        
+
         print("Fieldnames found in sheet {0} in file {1}: ".format(sheetnames[0], filename), output_list)
 
     elif input_sheetname != "":
@@ -44,7 +44,7 @@ def get_otherrows (filename, input_sheetname = ""):
     wb = load_workbook(filename)
     sheetnames = wb.sheetnames
     output_list = []
-    
+
     if input_sheetname == "":
         # Just get the first sheet
         ws = wb[sheetnames[0]]
@@ -54,7 +54,7 @@ def get_otherrows (filename, input_sheetname = ""):
             for cell in row:
                 row_list.append(cell)
             output_list.append(row_list)
-            
+
         print("Rows found in sheet {0} in file {1}: ".format(sheetnames[0], filename), len(output_list))
 
     elif input_sheetname != "":
@@ -66,7 +66,7 @@ def get_otherrows (filename, input_sheetname = ""):
                 for cell in row:
                     row_list.append(cell)
                 output_list.append(row_list)
-            
+
             print("Rows found in sheet {0} in file {1}: ".format(input_sheetname, filename), len(output_list))
         else:
             print("Sheet {0} not found in {1}.".format(input_sheetname, filename))

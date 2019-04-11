@@ -6,7 +6,7 @@ def readcredentials(filename = "credentials.txt"):
     Objective: obtaining e-mail and password in order to use your e-mail
     Output: dictionary with e-mail, password and server.
     """
-    output_dict = {}
+    credentials = {}
 
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, 'filename')
