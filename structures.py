@@ -239,11 +239,12 @@ def flatten_dictdictdict(input_dict, additional_field = "original_key"):
 
 ####################################################################################################
 
-def listlist_to_dictdict (input_list, fieldname_list = ""):
+def listlist_to_dictdict (input_list, fieldname_list = "", keyfield = "id"):
     """
     Inputs:
         A list containing lists with data and a list containing fieldnames (optional).
         If fieldname_list is blank, it will be assumed that the fieldnames are in row 0 of input_list.
+        The keyfield name that will become the primary key, called 'id' by default.
     Output:
         Returns a nested dictionary where the outer dictionary index is the row in the original data list.
         The inner dictionaries match the cells in that row to the field names.
@@ -252,7 +253,13 @@ def listlist_to_dictdict (input_list, fieldname_list = ""):
 
     if fieldname_list == "":
         fieldnames = input_list[0]
-        data_list = input_list [1:]
+        data_list  = input_list[1:]
+    else:
+        fieldnames = fieldname_list
+        if input_list[0] == fieldname_list:
+            data_list  = input_list[1:]
+        else:
+            data_list  = input_list
 
     for row in data_list:  # Exclude the row with the field names
         if len(row) > 0: # Skip empty rows
@@ -260,7 +267,9 @@ def listlist_to_dictdict (input_list, fieldname_list = ""):
             row_dict = {}
             for fieldname in fieldnames:
                 row_dict[fieldname] = row[fieldnames.index(fieldname)]
-            idx = row_dict[keyfield]
+                # Create an id field if it does not exist, else use the field set by the user
+                if keyfield == "id" and "id" not in fieldnames: idx = data_list.index(row)
+                else: idx = row_dict[keyfield]
             output_dict[idx] = row_dict
 
     return output_dict
