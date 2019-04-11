@@ -37,7 +37,7 @@ def get_firstrow (filename, input_sheetname = ""):
 def get_otherrows (filename, input_sheetname = ""):
     """
     Inputs: filename and optional input sheet name. If left blank, the first row will be read.
-    Objective: get values in the first row, presumably column names.
+    Objective: get values in the rows beside the first one, presumably values.
     Output: list.
     """
 

@@ -21,16 +21,22 @@ def test_get_otherrows(filenames, input_sheetname = ""):
     print("Testing getting the remaining rows in the test files with a sheet name.")
     for filename in filenames:
         if filename.endswith(".xls"):
-            pass #xlstolist.get_otherrows(filename, input_sheetname)
+            print("\nFiletype: .xls:")
+            test = xlstolist.get_otherrows(filename, input_sheetname)
+            pprint(test)
         elif filename.endswith(".xlsx"):
+            print("\nFiletype: .xlsx:")
             test = xlsxtolist.get_otherrows(filename, input_sheetname)
             pprint(test)
     print("")
     print("Testing getting the remaining rows in the test files, first sheet.")
     for filename in filenames:
         if filename.endswith(".xls"):
-            pass #xlstolist.get_otherrows(filename, "")
+            print("\nFiletype: .xls:")
+            test = xlstolist.get_otherrows(filename, "")
+            pprint(test)
         elif filename.endswith(".xlsx"):
+            print("\nFiletype: .xlsx:")
             test = xlsxtolist.get_otherrows(filename, "")
             pprint(test)
     print("")
