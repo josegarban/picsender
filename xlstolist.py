@@ -7,7 +7,6 @@ def get_firstrow (filename, input_sheetname = ""):
     Output: list.
     """
 
-
     wb = open_workbook(filename, on_demand = True)
     sheetnames = wb.sheet_names()
 
@@ -21,7 +20,7 @@ def get_firstrow (filename, input_sheetname = ""):
     elif input_sheetname != "":
         if input_sheetname in sheetnames:
             ws = wb.sheet_by_name(input_sheetname)
-            fieldnames = ws.row_values(1)
+            fieldnames = ws.row_values(0)
             wb.unload_sheet(input_sheetname)
             print("Fieldnames found in sheet {0} in file {1}: ".format(input_sheetname, filename), fieldnames)
         else:
