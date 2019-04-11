@@ -67,13 +67,13 @@ def compare_twolists(list1, list2, list1name = "", list2name = "", printinstruct
     list1_notin_list2 = [x for x in list1 if x not in list2]
     if printinstructions == True:
         print("{0} keys found in {2} but not in {3}: \n{1}\n".format(
-            len(list1_notin_list2), list1_notin_list2, list1name, list2name))    
-    
+            len(list1_notin_list2), list1_notin_list2, list1name, list2name))
+
     # Get what is in list2 but not in list1
     list2_notin_list1 = [x for x in list2 if x not in list1]
     if printinstructions == True:
         print("{0} keys found in {3} but not in {2}: \n{1}\n".format(
-            len(list2_notin_list1), list2_notin_list1, list1name, list2name))    
+            len(list2_notin_list1), list2_notin_list1, list1name, list2name))
 
     if list1_notin_list2 == [] and list2_notin_list1 == []: same = True
     else: same = False
@@ -92,20 +92,20 @@ def compare_twodictkeys(dict1, dict2, dict1name = "", dict2name = "", printinstr
     # Get lists with dictionary keys
     dict1keys = getdictkeys(dict1, dict1name, printinstructions)
     dict2keys = getdictkeys(dict2, dict2name, printinstructions)
-    
+
     # Generate names for the dictionary key names to appear on screen
     if dict1name == "": dict1keysname = "dictionary keys"
     else: dict1keysname = dict1name + " keys"
-    
+
     if dict2name == "": dict2keysname = "dictionary keys"
     else: dict2keysname = dict2name + " keys"
-    
-    dictkey_comparison = compare_twolists(dict1keys, 
+
+    dictkey_comparison = compare_twolists(dict1keys,
                                           dict2keys,
                                           dict1keysname,
                                           dict2keysname,
                                           printinstructions)
-    
+
     dict1keys_notin_dict2keys = dictkey_comparison[1]
     dict2keys_notin_dict1keys = dictkey_comparison[2]
 
@@ -116,17 +116,17 @@ def compare_twodictkeys(dict1, dict2, dict1name = "", dict2name = "", printinstr
             len(dict1_notin_dict2), dict1name, dict2name))
         pprint.pprint(dict1_notin_dict2)
         print("")
-        
+
     dict2_notin_dict1 = {x : dict2[x] for x in dict2keys_notin_dict1keys}
     if printinstructions == True:
         print("{0} rows found in {2} but not in {1}:".format(
             len(dict2_notin_dict1), dict1name, dict2name))
-        pprint.pprint(dict2_notin_dict1)    
+        pprint.pprint(dict2_notin_dict1)
         print("")
-        
+
     if dict1_notin_dict2 == {} and dict2_notin_dict1 == {}: same = True
     else: same = False
-        
+
     return (same, dict1_notin_dict2, dict2_notin_dict1)
 
 ####################################################################################################
@@ -144,9 +144,9 @@ def compare_twodictsfull(dict1, dict2, dict1name = "", dict2name = "", printinst
     key_comparison = compare_twodictkeys(dict1, dict2, dict1name, dict2name, printinstructions)
     # Keys in dict1 but not in dict2: key_comparison[1]
     # Keys in dict2 but not in dict1: key_comparison[2]
-    
+
     # Get what is in both dictionaries in the keys present in both dictionaries
-    union1 = {x : dict1[x] for x in dict1 if x not in key_comparison[1] } 
+    union1 = {x : dict1[x] for x in dict1 if x not in key_comparison[1] }
     union2 = {x : dict2[x] for x in dict2 if x not in key_comparison[2] }
 
     # Show the discrepancies in tuples
@@ -156,9 +156,9 @@ def compare_twodictsfull(dict1, dict2, dict1name = "", dict2name = "", printinst
         else: autofill = " between {0} and {1}".format(dict1name, dict2name)
         print("{0} discrepancies found{1}:".format(
             len(discrepancies), autofill))
-        pprint.pprint(discrepancies)    
+        pprint.pprint(discrepancies)
         print("")
-        
+
     return (key_comparison[1], key_comparison[2], discrepancies)
 
 ####################################################################################################
@@ -175,14 +175,14 @@ def dictlist_to_dictdict(input_dict, field = ""):
             The key in the middle dictionary is a string of the item index within the original list.
     """
     output_dict = {}
-    
+
     input_dict_keys = list(input_dict.keys())
 
     if type(input_dict[input_dict_keys[0]]) is list:
         for key in input_dict_keys:
             # The same outer key will be kept but the item will be a dictionary instead of a list
             output_dict[key] = {}
-            
+
             for row in input_dict[key]:
                 # The new inner key will be the row index within the original list
                 if field == "":
@@ -192,14 +192,14 @@ def dictlist_to_dictdict(input_dict, field = ""):
                 else:
                     index = row[field]
                     output_dict[key][index] = row
-                
+
     else:
         print("""
     Item could not be converted from the form dictionary → list
-                                  to the form dictionary → dictionary. 
+                                  to the form dictionary → dictionary.
         """)
         output_dict = input_dict
-    
+
     return output_dict
 
 ####################################################################################################
@@ -208,13 +208,13 @@ def flatten_dictdictdict(input_dict, additional_field = "original_key"):
     """
     Input:
         nested data structure of the form dictionary → dictionary → dictionary
-        the name that will be 
+        the name that will be
     Objective: the outermost dictionary key will be turned into a field in the innermost dictionary.
     Output: nested data structure of the form dictionary → dictionary, where
             the inner dictionary will have an additional field.
     """
     output_dict = {}
-    
+
     # Add the outermost_key in the inner_dict again
     for outermost_key in input_dict:
         for outer_key in input_dict[outermost_key]:
@@ -226,7 +226,7 @@ def flatten_dictdictdict(input_dict, additional_field = "original_key"):
         for outer_key in input_dict[outermost_key]:
             if outermost_keys.index(outermost_key) > 0:
                 # A new absolute key is created where the previous keys are counted
-                try: # If the key is a number this will work 
+                try: # If the key is a number this will work
                     absolute_outer_key = outer_key + \
                                      len(input_dict[outermost_keys[outermost_keys.index(outermost_key) - 1]])
                 except:
@@ -234,5 +234,33 @@ def flatten_dictdictdict(input_dict, additional_field = "original_key"):
             else: # If the key is text OR we are just starting (key = 0)
                 absolute_outer_key = outer_key
             output_dict[absolute_outer_key] = input_dict[outermost_key][outer_key]
-            
+
+    return output_dict
+
+####################################################################################################
+
+def listlist_to_dictdict (input_list, fieldname_list = ""):
+    """
+    Inputs:
+        A list containing lists with data and a list containing fieldnames (optional).
+        If fieldname_list is blank, it will be assumed that the fieldnames are in row 0 of input_list.
+    Output:
+        Returns a nested dictionary where the outer dictionary index is the row in the original data list.
+        The inner dictionaries match the cells in that row to the field names.
+    """
+    output_dict = {}
+
+    if fieldname_list = "":
+        fieldnames = input_list[0]
+        data_list = input_list [1:]
+
+    for row in data_list:  # Exclude the row with the field names
+        if len(row) > 0: # Skip empty rows
+            # Create an empty dictionary for each row
+            row_dict = {}
+            for fieldname in fieldnames:
+                row_dict[fieldname] = row[fieldnames.index(fieldname)]
+            idx = row_dict[keyfield]
+            output_dict[idx] = row_dict
+
     return output_dict
