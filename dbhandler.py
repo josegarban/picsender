@@ -158,6 +158,33 @@ def create_table(input_dict, sql_filename = "", sql_table = "", printinstruction
 # FUNCTIONS TO COMPARE DATA IN A DICTIONARY AND DATA IN A TABLE DATABASE
 ####################################################################################################
 
+def get_alldbcolumns(sql_filename = "",
+                     sql_table = "",
+                     dbkey_column = "id",
+                     printinstructions = True):
+    """
+    Inputs: filename,
+            table that will be opened,
+            column in the database table is assumed to be called "id", (can be changed)
+            printinstructions will let some intermediate stepts to be reported on-screen
+    Objective: get all column names in a database table.
+    Outputs: list with column names in the database table.
+    """
+    
+    input_dict = get_alldbrows(sql_filename,
+                               sql_table,
+                               dbkey_column,
+                               printinstructions)
+    output_list = [x[0] for x in dictfieldnames_to_tuplist(input_dict)]
+    
+    if printinstructions == True: print("Columns in table '{0}' in file '{1}': {2}".format(sql_table,
+                                                                                           sql_filename,
+                                                                                           output_list))
+    
+    return output_list
+
+####################################################################################################
+
 def get_alldbkeys(sql_filename = "",
                   sql_table = "",
                   dbkey_column = "id",

@@ -63,8 +63,11 @@ def test_dbchild(sql_filename, sql_parenttable, sql_childtable):
                                "id",
                                True)
     
-    parent_columns = [x[0] for x in dbhandler.dictfieldnames_to_tuplist(input_dict)]
-    print("Columns", parent_columns)
+    parent_columns = dbhandler.get_alldbcolumns(sql_filename,
+                               sql_parenttable,
+                               "id",
+                               True)
+    
     
     parent_keys = dbhandler.get_alldbkeys(sql_filename,
                               sql_parenttable,
