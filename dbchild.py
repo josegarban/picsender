@@ -3,6 +3,7 @@ Sqlite functions to create a child table to a parent table in the database
 """
 
 import dbhandler
+import structures
 
 ####################################################################################################
 # INSTRUCTION CREATION 
@@ -58,26 +59,6 @@ def tuplists_merge(tuplist1, tuplist2="", mergeby1 = 0, mergeby2 = 0):
         output_tuplist.append(tuple(templist))
     
     return output_tuplist
-
-####################################################################################################
-
-def tuplist_sieve(tup_list, wantedtup_list = "", position = 0):
-    """
-    Input: a list consisting of tuples,
-            a list to define which values are wanted in the tuples that will remain
-            a position where the values are found, default is 0
-    Objective: filter a tup_list consisting of several tuples provided that the values within them are
-            in wantedtup_list in the position position.
-    Output: a list consisting of tuples.
-    """
-    output_list = []
-    if wantedtup_list == "": wantedtup_list = tup_list # If wantedtup_list is empty, output = input
-    
-    for tup in tup_list:
-        if tup[position] in wantedtup_list:
-            output_list.append(tup)
-
-    return output_list
 
 ####################################################################################################
 
