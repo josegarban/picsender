@@ -321,7 +321,7 @@ def keep_members_inlist(input_list, input_choice = ""):
             return input_list
 
     else:
-        print("\nThe following elements will be removed, if applicable:", input_choice)
+        print("\nThe following elements will be kept, if applicable:", input_choice)
         output_list = [x for x in input_list if x in input_choice] # Nothing has to be converted to numbers
     
     if len(output_list) == 0:
