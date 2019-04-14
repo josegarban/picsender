@@ -68,7 +68,6 @@ def test_dbchild(sql_filename, sql_parenttable, sql_childtable):
                                "id",
                                True)
     
-    
     parent_keys = dbhandler.get_alldbkeys(sql_filename,
                               sql_parenttable,
                               "id",
