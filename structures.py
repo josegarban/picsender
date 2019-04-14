@@ -298,3 +298,38 @@ def tuplist_sieve(tup_list, wantedtup_list = "", position = 0):
     return output_list
 
 ####################################################################################################
+
+def keep_members_inlist(input_list, input_choice = ""):
+    """
+    Input: a list with several items.
+            predetermined choice, that can be left blank to prompt the user for an answer.
+    Output: a list with the items to be kept.
+    """
+    print("The input list consists of the following elements: ")
+    tuples = [(input_list.index(element), element) for element in input_list]
+    print(input_list)
+    
+    if input_choice == "":
+        print("\nWhich do you want to keep? Type the relevant indices separated by commas.")
+        choice = input("")
+        # Get indices as integers
+        try:
+            chosen_indices = [int(x) for x in list(choice.replace(" ,",",").replace(", ",",").split(","))]
+            output_list = [x[1] for x in tuples if x[0] in chosen_indices]
+        except:
+            print("The input may not have consisted of integers. No changes will be made to the original list. Try again.")
+            return input_list
+
+    else:
+        print("\nThe following elements will be removed, if applicable:", input_choice)
+        output_list = [x for x in input_list if x in input_choice] # Nothing has to be converted to numbers
+    
+    if len(output_list) == 0:
+        print("The abridged list is empty. Possibly your desired elements are not in the original list:")
+        print(output_list)
+    else:
+        print("The abridged list contains the following members:")
+        print(output_list)
+    
+    return output_list
+

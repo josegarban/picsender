@@ -1,5 +1,5 @@
 import main
-import dbchild, dbhandler
+import dbchild, dbhandler, structures
 import xlstolist, xlsxtolist
 from pprint import pprint
 
@@ -90,4 +90,25 @@ FILENAME = "output.sqlite"
 PARENTTABLE = "Processed_infofile"
 CHILDTABLE = "Child"
 
-test_dbchild(FILENAME, PARENTTABLE, CHILDTABLE)
+#test_dbchild(FILENAME, PARENTTABLE, CHILDTABLE)
+
+
+####################################################################################################
+
+MYLIST = [0, 10, 20, 30, 40]
+MYCHOICE1 = [10, 30]
+MYCHOICE2 = [1, 3]
+MYCHOICE3 = ["a", "b"]
+
+def test_structures_sieves(input_list, input_choice1, input_choice2):
+    print("Testing removing members from a list with a predetermined choice...")
+    structures.keep_members_inlist(input_list, input_choice1)
+    print("")
+    print("Testing removing members from a list with an inconsistent predetermined choice...")
+    structures.keep_members_inlist(input_list, input_choice2)
+    print("")
+    print("Testing removing members from a list with a user-defined choice...")
+    structures.keep_members_inlist(input_list, "")
+        
+        
+test_structures_sieves(MYLIST, MYCHOICE1, MYCHOICE2)
