@@ -56,37 +56,12 @@ def test_get_otherrows(filenames, input_sheetname = ""):
 ################################### TEST CHILDREN CREATION ######################################### 
 ####################################################################################################
 
-def test_dbchild(sql_filename, sql_parenttable, sql_childtable):
-    
-    input_dict = dbhandler.get_alldbrows(sql_filename,
-                               sql_parenttable,
-                               "id",
-                               True)
-    
-    parent_columns = dbhandler.get_alldbcolumns(sql_filename,
-                               sql_parenttable,
-                               "id",
-                               True)
-    
-    relation_tuplist = dbchild.get_relations(parent_columns)
-
-    dbchild.create_childtable(input_dict,
-                              relation_tuplist,
-                              sql_filename,
-                              sql_parenttable,
-                              sql_childtable,
-                              True)
-            
-    return None
-
-####################################################################################################
-
 FILENAME = "output.sqlite"
 PARENTTABLE = "Processed_infofile"
 CHILDTABLE = "Child"
 COLUMNNAMES = ("id", "Nombres")
 
-test_dbchild(FILENAME, PARENTTABLE, CHILDTABLE)
+dbchild.startchild(FILENAME, PARENTTABLE, CHILDTABLE)
 
 
 ####################################################################################################

@@ -156,7 +156,39 @@ def create_childtable(input_dict,
 
     return None
 
-#def createchild
+####################################################################################################
+
+def start_dbchild(sql_filename, sql_parenttable, sql_childtable):
+    """
+    Inputs: filename, parent and child tables.
+    Objective: create a child table with a foreign key from a parent table.
+    Output: none besides those created by the called functions (logs).
+    """
+    print("\nA child table will be created in a .sqlite database with a foreign key from a parent table")
+    if sql_filename    == "": sql_filename    = input("Insert file name:")
+    if sql_parenttable == "": sql_parenttable = input("Insert parent table name:")
+    if sql_childtable  == "": sql_childtable  = input("Insert child table name:")
+
+    input_dict = dbhandler.get_alldbrows(sql_filename,
+                               sql_parenttable,
+                               "id",
+                               True)
+    
+    parent_columns = dbhandler.get_alldbcolumns(sql_filename,
+                               sql_parenttable,
+                               "id",
+                               True)
+    
+    relation_tuplist = get_relations(parent_columns)
+
+    create_childtable(input_dict,
+                      relation_tuplist,
+                      sql_filename,
+                      sql_parenttable,
+                      sql_childtable,
+                      True)
+            
+    return None
     
 ####################################################################################################
 # ROW OPERATIONS
