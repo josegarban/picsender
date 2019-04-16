@@ -148,16 +148,15 @@ def create_childtable(input_dict,
 
     # Build the instruction to be executed to create the table 
     fieldnames = child_dictfields_to_string(input_dict, relation_tuplist)
-    print("Fieldnames,", fieldnames)
     instruction = """CREATE TABLE IF NOT EXISTS {0} {1}""".format(sql_childtable, fieldnames)
     
     # Create the table
-    if printinstructions == True: print("Instruction executed:", instruction)
     my_cursor.execute(instruction)
     if printinstructions == True: print("Instruction executed:", instruction)
 
     return None
 
+#def createchild
     
 ####################################################################################################
 # ROW OPERATIONS

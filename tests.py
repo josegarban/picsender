@@ -56,7 +56,7 @@ def test_get_otherrows(filenames, input_sheetname = ""):
 ################################### TEST CHILDREN CREATION ######################################### 
 ####################################################################################################
 
-def test_dbchild(sql_filename, sql_parenttable, sql_childtable, child_columnnames):
+def test_dbchild(sql_filename, sql_parenttable, sql_childtable):
     
     input_dict = dbhandler.get_alldbrows(sql_filename,
                                sql_parenttable,
@@ -68,9 +68,7 @@ def test_dbchild(sql_filename, sql_parenttable, sql_childtable, child_columnname
                                "id",
                                True)
     
-    child_columns = structures.keep_members_inlist(parent_columns, child_columnnames)
-    
-    relation_tuplist = dbchild.get_relations(child_columns)
+    relation_tuplist = dbchild.get_relations(parent_columns)
 
     dbchild.create_childtable(input_dict,
                               relation_tuplist,
@@ -88,7 +86,7 @@ PARENTTABLE = "Processed_infofile"
 CHILDTABLE = "Child"
 COLUMNNAMES = ("id", "Nombres")
 
-test_dbchild(FILENAME, PARENTTABLE, CHILDTABLE, COLUMNNAMES)
+test_dbchild(FILENAME, PARENTTABLE, CHILDTABLE)
 
 
 ####################################################################################################
