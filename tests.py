@@ -68,11 +68,6 @@ def test_dbchild(sql_filename, sql_parenttable, sql_childtable, child_columnname
                                "id",
                                True)
     
-#    parent_keys = dbhandler.get_alldbkeys(sql_filename,
-#                              sql_parenttable,
-#                              "id",
-#                              True)
-    
     child_columns = structures.keep_members_inlist(parent_columns, child_columnnames)
     
     relation_tuplist = dbchild.get_relations(child_columns)
