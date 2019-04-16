@@ -346,3 +346,29 @@ def keep_members_inlist(input_list, input_choice = ""):
     
     return output_list
 
+
+####################################################################################################
+# FUNCTIONS TO EXPAND DATA STRUCTURES 
+####################################################################################################
+
+def expand_dict (input_dict, listcolumn_name):
+    """
+    Input: dictionary,
+            fieldname consisting of lists or tuples
+            
+    Objective: if there is a column whose values are lists, the records in the dictionary will be multiplied.
+    Output: dictionary
+    """
+    output_dict = {}
+    
+    # If parent_dict is a nested dictionary
+    if type(input_dict[list(input_dict.keys())[0]]) is dict:
+        for outer_key in input_dict:
+            for member in input_dict[outer_key][listcolumn_name]:
+                member_row = {}
+                for inner_key in input_dict[outer_key]:
+                    member_row[inner_key] = input_dict[outer_key][inner_key]
+                # The output_dict will have keys consisting of the old outer_key + list element
+                output_dict[str(outer_key)+"_"+str(member)] = member_row
+
+    return output_dict
