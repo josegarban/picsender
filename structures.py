@@ -368,6 +368,8 @@ def expand_dict (input_dict, listcolumn_name):
                 member_row = {}
                 for inner_key in input_dict[outer_key]:
                     member_row[inner_key] = input_dict[outer_key][inner_key]
+                # The list is replaced by an element within it
+                member_row[listcolumn_name] = member 
                 # The output_dict will have keys consisting of the old outer_key + list element
                 output_dict[str(outer_key)+"_"+str(member)] = member_row
 

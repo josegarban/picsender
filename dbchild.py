@@ -281,7 +281,9 @@ def fill_child(listcolumn_name,
                                    parent_dict,
                                    separator,
                                    pythonic,
-                                   printinstructions)    
+                                   printinstructions)
+    
+    expanded_child_dict = structures.expand_dict(child_dict, listcolumn_name)
 
     # Open the database and get the table name if none has been set
     my_connector  = dbhandler.create_connector(sql_filename)
@@ -289,16 +291,16 @@ def fill_child(listcolumn_name,
     if sql_childtable  == "": sql_table = input("Insert child table name to which values will be copied:")
     
     # Build the instruction to be executed to create the table
-    fields_list    = dbhandler.dictfieldnames_to_tup(child_dict)
-    fieldnames_str = dbhandler.dictfieldnames_to_string(child_dict)
+    fields_list    = dbhandler.dictfieldnames_to_tup(expanded_child_dict)
+    fieldnames_str = dbhandler.dictfieldnames_to_string(expanded_child_dict)
     questionmarks  = "(" + (("?, ")*len(fields_list))[:-2] + ")"
     instruction    = """INSERT OR IGNORE INTO {0} {1} VALUES {2}""".format(
         sql_childtable, fieldnames_str, questionmarks)                 
 
     # Get the values in the instruction
-    for outer_key in child_dict:    
+    for outer_key in expanded_child_dict:    
         values     = [outer_key] # This is the id
-        for value in child_dict[outer_key].values():
+        for value in expanded_child_dict[outer_key].values():
             values.append(value)
         
     # Execute the instruction
