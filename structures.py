@@ -329,7 +329,7 @@ def keep_members_inlist(input_list, input_choice = ""):
         print(output_list)
     else:
         print("The abridged list contains the following members:")
-        print(output_list)
+        print(output_list, "")
     
     return output_list
 

@@ -56,7 +56,7 @@ def test_get_otherrows(filenames, input_sheetname = ""):
 ################################### TEST CHILDREN CREATION ######################################### 
 ####################################################################################################
 
-def test_dbchild(sql_filename, sql_parenttable, sql_childtable):
+def test_dbchild(sql_filename, sql_parenttable, sql_childtable, child_columnnames):
     
     input_dict = dbhandler.get_alldbrows(sql_filename,
                                sql_parenttable,
@@ -68,13 +68,15 @@ def test_dbchild(sql_filename, sql_parenttable, sql_childtable):
                                "id",
                                True)
     
-    parent_keys = dbhandler.get_alldbkeys(sql_filename,
-                              sql_parenttable,
-                              "id",
-                              True)
+#    parent_keys = dbhandler.get_alldbkeys(sql_filename,
+#                              sql_parenttable,
+#                              "id",
+#                              True)
     
-    relation_tuplist = dbchild.get_relations(parent_columns)
+    child_columns = structures.keep_members_inlist(parent_columns, child_columnnames)
     
+    relation_tuplist = dbchild.get_relations(child_columns)
+
     dbchild.create_childtable(input_dict,
                               relation_tuplist,
                               sql_filename,
@@ -89,8 +91,9 @@ def test_dbchild(sql_filename, sql_parenttable, sql_childtable):
 FILENAME = "output.sqlite"
 PARENTTABLE = "Processed_infofile"
 CHILDTABLE = "Child"
+COLUMNNAMES = ("id", "Nombres")
 
-#test_dbchild(FILENAME, PARENTTABLE, CHILDTABLE)
+test_dbchild(FILENAME, PARENTTABLE, CHILDTABLE, COLUMNNAMES)
 
 
 ####################################################################################################
@@ -110,5 +113,4 @@ def test_structures_sieves(input_list, input_choice1, input_choice2):
     print("Testing removing members from a list with a user-defined choice...")
     structures.keep_members_inlist(input_list, "")
         
-        
-test_structures_sieves(MYLIST, MYCHOICE1, MYCHOICE2)
+#test_structures_sieves(MYLIST, MYCHOICE1, MYCHOICE2)

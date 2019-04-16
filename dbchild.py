@@ -30,9 +30,11 @@ def get_relations(field_list, table_names = ""):
     templist[1] = input("Type the name here: ")
     print("What is this field called in the parent table? Leave it blank if it is called the same in both: ")
     templist[2] = input("Type the name here: ")
+    print("")
     
     return tuple(templist)
     
+
 ####################################################################################################
 
 def tuplists_merge(tuplist1, tuplist2="", mergeby1 = 0, mergeby2 = 0):
@@ -62,7 +64,7 @@ def tuplists_merge(tuplist1, tuplist2="", mergeby1 = 0, mergeby2 = 0):
 
 ####################################################################################################
 
-def child_dictfields_to_string(input_dict, relations_list):
+def child_dictfields_to_string(input_dict, relations_list): ###Change this function
     """
     Inputs: dictionary.
     Objective: gets fields in a dictionary and converts them
