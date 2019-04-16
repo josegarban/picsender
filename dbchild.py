@@ -22,35 +22,6 @@ def get_relations(field_list, table_names = ""):
     templist = ["", "", ""]
 
     if table_names != "": print("\nThe following tables exist in the database", table_names)
-    print("\nOne of the tables in the database will be linked to a child table to be created.")
-    print("Which of the following fields in the parent table will exist in both tables?")
-    print(field_list, "\n")
-    templist[0] = input("Type the field here: ")
-    print("What is the parent table to the child table that will be created?")
-    templist[1] = input("Type the name here: ")
-    templist[1] = ", FOREIGN KEY (" + templist[1] + ")"
-    print("What is this field called in the parent table? Leave it blank if it is called the same in both: ")
-    templist[2] = input("Type the name here: ")
-    templist[2] = "REFERENCES (" + templist[2] + ")"
-    print("")
-    
-    return tuple(templist)
-    
-####################################################################################################
-
-def get_relations(field_list, table_names = ""):
-    """
-    Input: field list in the dictionary from where the relations will be used
-            table_names (optional): list of tables in a sql database.
-    Objective: define a foreign key.
-    Output: list with a tuple of the form (fieldname, referencetable_name, fieldname_in_referencetable) 
-            to be used in statements such as:
-            "id integer NOT NULL,
-                FOREIGN KEY (id) REFERENCES parent_table(id)".
-    """
-    templist = ["", "", ""]
-
-    if table_names != "": print("\nThe following tables exist in the database", table_names)
 
     print("\nOne of the tables in the database will be linked to a child table to be created.")
     print("Which of the following fields in the parent table will exist in both tables?")
@@ -186,4 +157,129 @@ def create_childtable(input_dict,
     if printinstructions == True: print("Instruction executed:", instruction)
 
     return None
+
+    
+####################################################################################################
+# ROW OPERATIONS
+####################################################################################################
+
+def parse_childvalues(listcolumn_name,
+                      parent_dict,
+                      separator = " ",
+                      pythonic = False,
+                      printinstructions = True):
+    """
+    Input: a column name containing string representations of lists,
+            dictionary representing parent dictionary,
+            whether the string representation is pythonic or not,
+            separator in non-pythonic string representations
+            printing instructions for some intermediate steps.
+    Objective: take values from a table to create a secondary table
+    Output: list of dictionaries 
+    """
+    output_dict = {}
+    
+    # Replace list representations with actual lists
+    print(parent_dict)
+    
+    # If parent_dict is a nested dictionary
+    if type(parent_dict[list(parent_dict.keys())[0]]) is dict:
+    
+        for outer_key in parent_dict:
+            for inner_key in parent_dict[outer_key]:
+                if inner_key == listcolumn_name:
+                    # Replace non-pythonic strings representing lists with lists
+                    if pythonic == False:
+                        input_string = parent_dict[outer_key][inner_key]
+                        parent_dict[outer_key][inner_key] = structures.strspaces_to_simplelist(input_string,
+                                                                                               separator)
+                    else: pass
+    else:
+        for outer_key in parent_dict:
+            if outer_key == listcolumn_name:
+                # Replace non-pythonic strings representing lists with lists
+                if pythonic == False:
+                    input_string = parent_dict[outer_key]
+                    parent_dict[outer_key][inner_key] = structures.strspaces_to_simplelist(input_string,
+                                                                                           separator)
+                else: pass
+                        
+    return output_dict
+
+####################################################################################################
+
+def fill_child(listcolumn_name,
+               additionalcolumn_names = "",
+               separator = " ",
+               pythonic = False,
+               sql_filename = "",
+               sql_table = "",
+               dbkey_column = "id",
+               sql_childtable = "",
+               printinstructions = True):
+    """
+    Inputs: a column name containing string representations of lists,
+            additional column_names to be copied,
+            whether the string representation is pythonic or not,
+            filename,
+            parent table that will be opened,
+            id column name in parent table,
+            child table that will be opened,
+            id column name in child table,
+            printinstructions will let some intermediate stepts to be reported on-screen
+    Objective: get some values in a child table.
+    Outputs: nested dictionary of the form { id value: {"column name": column value}...}.
+    """
+    # Get all values in parent table, ideally only some columns should be retrieved
+    parent_dict = dbhandler.get_alldbrows(sql_filename,
+                                          sql_table,
+                                          dbkey_column,
+                                          False)
+    
+    # Get the column names to be copied: if none are selected, all columns will be copied
+    if additionalcolumn_names == "":
+        additionalcolumn_names = dbhandler.get_alldbcolumns(sql_filename,
+                                                            sql_table,
+                                                            dbkey_column,
+                                                            False)
+
+    # Get the values to be copied in the new table
+    child_dict = parse_childvalues(listcolumn_name,
+                                   parent_dict,
+                                   separator,
+                                   pythonic,
+                                   printinstructions)    
+
+    # Open the database and get the table name if none has been set
+    my_connector  = dbhandler.create_connector(sql_filename)
+    my_cursor     = my_connector.cursor()
+    if sql_childtable  == "": sql_table = input("Insert child table name to which values will be copied:")
+    
+    # Build the instruction to be executed to create the table
+    fields_list    = dbhandler.dictfieldnames_to_tup(child_dict)
+    fieldnames_str = dbhandler.dictfieldnames_to_string(child_dict)
+    questionmarks  = "(" + (("?, ")*len(fields_list))[:-2] + ")"
+    instruction    = """INSERT OR IGNORE INTO {0} {1} VALUES {2}""".format(
+        sql_childtable, fieldnames_str, questionmarks)                 
+
+    # Get the values in the instruction
+    for outer_key in child_dict:    
+        values     = [outer_key] # This is the id
+        for value in child_dict[outer_key].values():
+            values.append(value)
+        
+    # Execute the instruction
+        row_string = "Instruction executed: {0} in table {1} in {2}.\nValues: {3}\n".format(
+            instruction, sql_childtable, sql_filename, tuple(values))
+        if printinstructions == True: print(row_string)
+        my_cursor.execute(instruction, tuple(values))
+        output_string = output_string + row_string
+        
+    # Commit and report the changes
+    my_connector.commit()
+    my_connector.close()
+    
+    return output_string
+
+
     
