@@ -59,10 +59,18 @@ def test_get_otherrows(filenames, input_sheetname = ""):
 FILENAME = "output.sqlite"
 PARENTTABLE = "Processed_infofile"
 CHILDTABLE = "Child"
-COLUMNNAMES = ("id", "Nombres")
+CHILDCOLUMN = ("Fotos")
 
-dbchild.startchild(FILENAME, PARENTTABLE, CHILDTABLE)
-
+#dbchild.startchild(FILENAME, PARENTTABLE, CHILDTABLE)
+dbchild.fill_child(CHILDCOLUMN,
+                   "",
+                   " ",
+                   False,
+                   FILENAME,
+                   PARENTTABLE,
+                   "id",
+                   CHILDTABLE,
+                   True)
 
 ####################################################################################################
 

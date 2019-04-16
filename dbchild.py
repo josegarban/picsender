@@ -208,33 +208,33 @@ def parse_childvalues(listcolumn_name,
     Objective: take values from a table to create a secondary table
     Output: list of dictionaries 
     """
-    output_dict = {}
-    
-    # Replace list representations with actual lists
-    print(parent_dict)
+    output_dict = parent_dict
     
     # If parent_dict is a nested dictionary
-    if type(parent_dict[list(parent_dict.keys())[0]]) is dict:
-    
-        for outer_key in parent_dict:
-            for inner_key in parent_dict[outer_key]:
+    if type(output_dict[list(output_dict.keys())[0]]) is dict:
+        for outer_key in output_dict:
+            for inner_key in output_dict[outer_key]:
                 if inner_key == listcolumn_name:
                     # Replace non-pythonic strings representing lists with lists
                     if pythonic == False:
-                        input_string = parent_dict[outer_key][inner_key]
-                        parent_dict[outer_key][inner_key] = structures.strspaces_to_simplelist(input_string,
+                        input_string = output_dict[outer_key][inner_key]                        
+                        output_dict[outer_key][inner_key] = structures.strspaces_to_simplelist(input_string,
                                                                                                separator)
                     else: pass
     else:
-        for outer_key in parent_dict:
+        for outer_key in output_dict:
             if outer_key == listcolumn_name:
                 # Replace non-pythonic strings representing lists with lists
                 if pythonic == False:
-                    input_string = parent_dict[outer_key]
-                    parent_dict[outer_key][inner_key] = structures.strspaces_to_simplelist(input_string,
+                    input_string = output_dict[outer_key]
+                    output_dict[outer_key][inner_key] = structures.strspaces_to_simplelist(input_string,
                                                                                            separator)
                 else: pass
-                        
+    
+    if printinstructions == True:
+        print("\nDictionary where string representations of lists were turned into lists:")
+        print(output_dict)
+        
     return output_dict
 
 ####################################################################################################
@@ -261,6 +261,8 @@ def fill_child(listcolumn_name,
     Objective: get some values in a child table.
     Outputs: nested dictionary of the form { id value: {"column name": column value}...}.
     """
+    output_string = ""
+    
     # Get all values in parent table, ideally only some columns should be retrieved
     parent_dict = dbhandler.get_alldbrows(sql_filename,
                                           sql_table,
