@@ -37,12 +37,14 @@ def get_relations(field_list, table_names = ""):
 
 ####################################################################################################
 
-def tuplists_merge(tuplist1, tuplist2="", mergeby1 = 0, mergeby2 = 0):
+def tuplists_merge(tuplist1, tuplist2="", mergeby1 = 0, mergeby2 = 0,
+                    printinstructions = True):
     """
     Input: field list containing tuples
             the user will be prompted for a secondary list containing tuples
             to be merged with the first if it is not provided,
-            mergeby is the index in the primary_tuplist by which both tuple lists will be merged.
+            mergeby is the index in the primary_tuplist by which both tuple lists will be merged,
+            printinstructions will let some intermediate stepts to be reported on-screen.
     Objective: add values to the tuples of a list containing tuples provided that the tuples in both lists
             share a variable
     Output: field list containing tuples adding other characteristics or keywords from relations_list
@@ -59,14 +61,24 @@ def tuplists_merge(tuplist1, tuplist2="", mergeby1 = 0, mergeby2 = 0):
                 for characteristic in tuplist2_tup:
                     templist.append(characteristic)
         output_tuplist.append(tuple(templist))
-    
+
+    if printinstructions = True:
+        print("Merged list 1:", tuplist1)
+        print("Merged list 2:", tuplist2)
+        print("Merged by:", mergeby1, mergeby2)
+        print("Result:", output_tuplist)
+
     return output_tuplist
 
 ####################################################################################################
 
-def child_dictfields_to_string(input_dict, relations_list): ###Change this function
+def child_dictfields_to_string(input_dict,
+                               relations_list,
+                               printinstructions = True): ###Change this function
     """
-    Inputs: dictionary.
+    Inputs: dictionary with the parent table.
+            list with the parameters in the child table,
+            printinstructions will let some intermediate stepts to be reported on-screen.
     Objective: gets fields in a dictionary and converts them
                 to a string representation of a list for use in SQL instructions.
     Returns: string.
@@ -85,6 +97,11 @@ def child_dictfields_to_string(input_dict, relations_list): ###Change this funct
         output_string = output_string + field_string + ", "
     output_string = "(" + output_string[:-2] + ")" # -2 to remove the last comma and space
     
+    if printinstructions = True:
+        print("Converting the following dictioanry to string:", input_dict)
+        print("Converting the following dictioanry to string:", input_dict)
+        print("Output:", output_string)
+    
     return output_string
 
 ####################################################################################################
@@ -99,8 +116,8 @@ def create_childtable(input_dict,
                       printinstructions = True):
     """
     Inputs: filename, table that will be updated or created, and a dictionary.
-            The table won't be created if it already exists.
-            printinstructions will let some intermediate stepts to be reported on-screen
+            The table won't be created if it already exists
+            printinstructions will let some intermediate stepts to be reported on-screen.
     Objective: a table in a sql table will be created but not filled with data,
             based on the dictionary.
     Outputs: none.
