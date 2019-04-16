@@ -25,13 +25,26 @@ def print_dictdescription(input_dict, dictname = "dictionary", printinstructions
 
 def str_to_simplelist(string):
     """
-    Input: string
+    Input: string with a pythonic representation of a list.
+    Objective: converts a string representation of a list into a list. 
     Output: list
     """
     string = string [1:-1].replace(" ", "").replace('"', "").replace("'", "")
     output_list = string.split(",")
 
     return output_list
+
+def strspaces_to_simplelist(input_string, separator = " "):
+    """
+    Input: a string and a separator (optional).
+    Objective: converts a string representation of a list into a list. Can be used for non-pythonic list representations.
+    Output: a list.
+    """
+    
+    if separator not in input_string: return [input_string]
+    else:
+        output_list = list(input_string.split(separator))
+        return output_list
 
 ####################################################################################################
 # FUNCTIONS TO COMPARE LISTS AND DICTIONARIES
