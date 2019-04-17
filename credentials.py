@@ -9,16 +9,16 @@ def readcredentials(filename = "credentials.txt"):
     credentials = {}
 
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    my_file = os.path.join(THIS_FOLDER, 'filename')
+    my_file = os.path.join(THIS_FOLDER, filename)
 
+    credentials_list = []
     with open (my_file, "r") as reader:
         for line in reader:
             credentials_list.append(line.rstrip())
 
-    credentials["server"]: credentials_list[0]
-    credentials["email"]: credentials_list[1]
-    credentials["password"]: credentials_list[2]
-
+    credentials["server"]   = credentials_list[0]
+    credentials["email"]    = credentials_list[1]
+    credentials["password"] = credentials_list[2]
     return credentials
 
 ####################################################################################################
