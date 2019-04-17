@@ -318,6 +318,10 @@ def fill_child(listcolumn_name,
     my_connector.commit()
     my_connector.close()
     
+    # Generate report
+    output_filename = sql_filename + "_history.txt"
+    filegenerator.string_to_txt(output_filename, output_string)
+    
     return output_string
 
 
