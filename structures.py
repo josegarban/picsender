@@ -351,26 +351,42 @@ def keep_members_inlist(input_list, input_choice = ""):
 # FUNCTIONS TO EXPAND DATA STRUCTURES 
 ####################################################################################################
 
-def expand_dict (input_dict, listcolumn_name):
+def expand_dict (input_dict, listcolumn_name, oldkey):
     """
     Input: dictionary,
-            fieldname consisting of lists or tuples
+            fieldname consisting of lists or tuples,
+            name of the key column in output_dict[newkey][?] into which the old key will be copied.
             
     Objective: if there is a column whose values are lists, the records in the dictionary will be multiplied.
     Output: dictionary
     """
     output_dict = {}
+    keys = list(input_dict.keys())
     
     # If parent_dict is a nested dictionary
-    if type(input_dict[list(input_dict.keys())[0]]) is dict:
-        for outer_key in input_dict:
-            for member in input_dict[outer_key][listcolumn_name]:
+    if type(input_dict[keys[0]]) is dict:
+        length_i = 0 # Counter up to the length of the input dictionary
+        length_o = 0 # Counter up to the length of the output dictionary
+        while length_i < len(keys):
+            length_o += len(input_dict[keys[length_i]][listcolumn_name])
+            length_i += 1
+        
+        for i in list(range(len(keys))):
+            outer_key = keys[i]                            
+            # Length of the list to be expanded
+            for k in list(range(len(input_dict[outer_key][listcolumn_name]))): 
                 member_row = {}
                 for inner_key in input_dict[outer_key]:
                     member_row[inner_key] = input_dict[outer_key][inner_key]
+        
                 # The list is replaced by an element within it
-                member_row[listcolumn_name] = member 
+                member_row[listcolumn_name] = input_dict[outer_key][listcolumn_name][k]
+                # The old key is moved to within the dictionary row
+                member_row[oldkey]          = outer_key
                 # The output_dict will have keys consisting of the old outer_key + list element
-                output_dict[str(outer_key)+"_"+str(member)] = member_row
+                output_dict[2*i+k]       = member_row
+                print(2*i+k, k, i, member_row)
+            
+    print("\n"*5, output_dict)
 
     return output_dict
