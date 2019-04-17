@@ -383,9 +383,11 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
                 member_row[listcolumn_name] = input_dict[outer_key][listcolumn_name][k]
                 # The old key is moved to within the dictionary row
                 member_row[oldkey]          = outer_key
-                # The output_dict will have keys consisting of the old outer_key + list element
-                output_dict[2*i+k]       = member_row
-                print(2*i+k, k, i, member_row)
+                # The output_dict will have keys function of outer_key and list element
+                counter = sum([len(input_dict[keys[j]][listcolumn_name]) for j in list(range(i))]) + k
+                # counter = n*i + k works only if all lists have length n                
+                output_dict[counter]       = member_row
+                print(counter, k, i, member_row)
             
     print("\n"*5, output_dict)
 
