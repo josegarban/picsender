@@ -1,6 +1,7 @@
 import sqlite3 as sqlite
 import os.path
 from filegenerator import files_in_folder_byext
+from dbhandler import get_alldbrows
 
 ####################################################################################################
 
@@ -106,4 +107,49 @@ def insert_blobs(extensions,
     
 ####################################################################################################
 
-# def insert_searchterm
+def insert_searchterm(criteria = "endswith",
+                      parameter = 3,
+                      sql_filename = "",
+                      blobtable = "blobtable",
+                      dbkey_column = "id",
+                      printinstructions = True):
+    """
+    Input:  first or last characters?
+            how many?
+            blob filename,
+            .sqlite file where the data is saved,
+            table where the data is saved,
+            name of the key column in the blob table
+            printinstructions will let some intermediate steps to be reported on-screen.
+    Objective: insert a searchterm of the first or last x characters.
+    Output: None
+    """
+
+    # Open the database and get the table name if none has been set
+    if sql_filename == "": sql_filename = input("Insert file name:")
+    if blobtable == "": blobtable = input("Insert table name:")
+    
+    my_connector = sqlite.connect(sql_filename)
+    my_cursor    = my_connector.cursor()
+    if not os.path.exists(sql_filename): print("File {0} does not exist.\n".format(sql_filename))
+    
+    else:
+        input_dict = get_alldbrows(sql_filename,
+                                   blobtable,
+                                   dbkey_column,
+                                   False)
+
+        for row in input_dict:
+            filename = input_dict[row]["filename"]
+            if   criteria == "endswith":   values = (filename[-parameter:] , filename)
+            elif criteria == "startswith": values = (filename[:parameter-1], filename)
+        
+            instruction = """UPDATE {0} SET searchterm = ? WHERE filename = ?;""".format(blobtable)
+            my_cursor.execute(instruction, values)
+            if printinstructions == True: print("Instruction executed:", instruction, values)
+    
+    # Commit the changes
+    my_connector.commit()
+    my_connector.close()
+    return None
+    

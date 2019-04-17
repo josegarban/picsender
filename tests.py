@@ -78,7 +78,8 @@ MY_FOLDER = "pics/"
 #                   True)
 
 #blobmgr.add_blobtable(FILENAME, BLOBTABLE, True)
-blobmgr.insert_blobs(MY_EXTENSIONS, MY_FOLDER, FILENAME, BLOBTABLE, True)
+#blobmgr.insert_blobs(MY_EXTENSIONS, MY_FOLDER, FILENAME, BLOBTABLE, True)
+blobmgr.insert_searchterm("endswith", 3, FILENAME, BLOBTABLE, "id", True)
 
 ####################################################################################################
 
