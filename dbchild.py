@@ -247,6 +247,7 @@ def fill_child(listcolumn_name,
                sql_table = "",
                dbkey_column = "id",
                sql_childtable = "",
+               childfk_name = "parentid",
                printinstructions = True):
     """
     Inputs: a column name containing string representations of lists,
@@ -257,6 +258,7 @@ def fill_child(listcolumn_name,
             id column name in parent table,
             child table that will be opened,
             id column name in child table,
+            name of foreign key in child referencing the parent table,
             printinstructions will let some intermediate stepts to be reported on-screen
     Objective: get some values in a child table.
     Outputs: nested dictionary of the form { id value: {"column name": column value}...}.
@@ -283,7 +285,9 @@ def fill_child(listcolumn_name,
                                    pythonic,
                                    printinstructions)
     
-    expanded_child_dict = structures.expand_dict(child_dict, listcolumn_name)
+    expanded_child_dict = structures.expand_dict(child_dict,
+                                                 listcolumn_name,
+                                                 childfk_name)
 
     # Open the database and get the table name if none has been set
     my_connector  = dbhandler.create_connector(sql_filename)
