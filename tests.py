@@ -1,5 +1,5 @@
 import main
-import dbchild, dbhandler, structures
+import blobmgr, dbchild, dbhandler, structures
 import xlstolist, xlsxtolist
 from pprint import pprint
 
@@ -60,18 +60,25 @@ FILENAME = "output.sqlite"
 PARENTTABLE = "Processed_infofile"
 CHILDTABLE = "Child"
 CHILDCOLUMN = ("Fotos")
+BLOBTABLE = "blobtable"
+MY_EXTENSIONS = [".jpeg", ".png", ".jpg"]
+MY_FOLDER = "pics/"
 
 #dbchild.startchild(FILENAME, PARENTTABLE, CHILDTABLE)
-dbchild.fill_child(CHILDCOLUMN,
-                   "",
-                   " ",
-                   False,
-                   FILENAME,
-                   PARENTTABLE,
-                   "id",
-                   CHILDTABLE,
-                   "parentid",
-                   True)
+
+#dbchild.fill_child(CHILDCOLUMN,
+#                   "",
+#                   " ",
+#                   False,
+#                   FILENAME,
+#                   PARENTTABLE,
+#                   "id",
+#                   CHILDTABLE,
+#                   "parentid",
+#                   True)
+
+#blobmgr.add_blobtable(FILENAME, BLOBTABLE, True)
+blobmgr.insert_blobs(MY_EXTENSIONS, MY_FOLDER, FILENAME, BLOBTABLE, True)
 
 ####################################################################################################
 
