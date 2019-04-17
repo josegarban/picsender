@@ -521,7 +521,7 @@ def update_dict_to_db(input_dict,
     """
     
     # Get the file and table name if none have been set
-    if sql_filename == "": sql_filename = input("Insert table name:")
+    if sql_filename == "": sql_filename = input("Insert file name:")
     if sql_table    == "": sql_table = input("Insert table name:")
     
     # Get the differences

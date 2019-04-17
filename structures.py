@@ -387,8 +387,5 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
                 counter = sum([len(input_dict[keys[j]][listcolumn_name]) for j in list(range(i))]) + k
                 # counter = n*i + k works only if all lists have length n                
                 output_dict[counter]       = member_row
-                print(counter, k, i, member_row)
             
-    print("\n"*5, output_dict)
-
     return output_dict

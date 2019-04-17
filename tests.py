@@ -70,6 +70,7 @@ dbchild.fill_child(CHILDCOLUMN,
                    PARENTTABLE,
                    "id",
                    CHILDTABLE,
+                   "parentid",
                    True)
 
 ####################################################################################################
