@@ -158,9 +158,10 @@ def create_childtable(input_dict,
 
 ####################################################################################################
 
-def start_child(sql_filename, sql_parenttable, sql_childtable):
+def start_child(sql_filename, sql_parenttable, sql_childtable, relations = ""):
     """
     Inputs: filename, parent and child tables.
+            optional: relations list
     Objective: create a child table with a foreign key from a parent table.
     Output: none besides those created by the called functions (logs).
     """
@@ -179,7 +180,10 @@ def start_child(sql_filename, sql_parenttable, sql_childtable):
                                "id",
                                True)
     
-    relation_tuplist = get_relations(parent_columns)
+    if relations == "":
+        relation_tuplist = get_relations(parent_columns)
+    else:
+        relation_tuplist = relations
 
     create_childtable(input_dict,
                       relation_tuplist,
