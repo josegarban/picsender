@@ -158,7 +158,7 @@ def create_childtable(input_dict,
 
 ####################################################################################################
 
-def start_dbchild(sql_filename, sql_parenttable, sql_childtable):
+def start_child(sql_filename, sql_parenttable, sql_childtable):
     """
     Inputs: filename, parent and child tables.
     Objective: create a child table with a foreign key from a parent table.
