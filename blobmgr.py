@@ -27,7 +27,12 @@ def add_blobtable(sql_filename = "",
     else:
         # Build the instruction to be executed to create the table 
         instruction = """CREATE TABLE IF NOT EXISTS Blobtable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, data BLOB, type TEXT, filename TEXT, searchterm TEXT);"""
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        data BLOB,
+        type TEXT,
+        filename TEXT,
+        filepath TEXT,
+        searchterm TEXT);"""
         
         #Create the table
         my_cursor.execute(instruction)
@@ -66,9 +71,9 @@ def insert_blob(blob_file,
             ablob = file.read()
             base = os.path.basename(blob_file)
             afile, ext = os.path.splitext(base)
-            instruction = """INSERT INTO {0} (data, type, filename) VALUES(?, ?, ?);""".format(blobtable)
+            instruction = """INSERT INTO {0} (data, type, filename, filepath) VALUES(?, ?, ?, ?);""".format(blobtable)
             
-            my_cursor.execute(instruction, (sqlite.Binary(ablob), ext, afile))
+            my_cursor.execute(instruction, (sqlite.Binary(ablob), ext, afile, base+afile+ext))
             if printinstructions == True: print("Instruction executed:", instruction)
     
     # Commit the changes
