@@ -83,10 +83,11 @@ def insert_blob(blob_file,
             base = os.path.basename(blob_file)
             afile, ext = os.path.splitext(base)
             instruction = """INSERT INTO {0} (data, type, filename, filepath) VALUES(?, ?, ?, ?);""".format(blobtable)
+            values = (sqlite.Binary(ablob), ext, afile, base+afile+ext)
             
-            my_cursor.execute(instruction, (sqlite.Binary(ablob), ext, afile, base+afile+ext))
-            if printinstructions == True: print("Instruction executed:", instruction)
-            output_string = output_string + instruction + string(values) + "\n"
+            my_cursor.execute(instruction, values)
+            if printinstructions == True: print("Instruction executed:", instruction, values)
+            output_string = output_string + instruction + str(values) + "\n"
     
     # Commit the changes
     my_connector.commit()
@@ -171,7 +172,7 @@ def insert_searchterm(criteria = "endswith",
             elif criteria == "startswith": values = (filename[:parameter-1], filename)
         
             instruction = """UPDATE {0} SET searchterm = ? WHERE filename = ?;""".format(blobtable)
-            output_string = output_string + instruction + string(values) "\n"
+            output_string = output_string + instruction + str(values) + "\n"
             my_cursor.execute(instruction, values)
             if printinstructions == True: print("Instruction executed:", instruction, values)
     
