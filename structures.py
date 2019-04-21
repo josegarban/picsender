@@ -398,19 +398,33 @@ def compress_dictlist (input_dictlist, listcolumn_name, keyfield = "id"):
             fieldname consisting of strings,
             another field used as id
     Objective: listcolumn_name will be converted into a list (all other fields should be the same).
-    Output: nested dictionaries
+    Output: nested dictionary where:
+            the key is keyfield in each row in input_dictlist,
+            there is only one instance of each key,
+            each row contains a list with possible values of listcolumn_name
     """
     output_dict = {}
-    
+    input_dict = {}
+
     for input_row in input_dictlist:
+        row = {}
         output_row = {}
         output_row[listcolumn_name] = []
         for field in input_row.keys():
             # Fields other than the field to be compressed are added
-            if field != listcolumn_name: output_row[field] = input_row[field]
-            # The field to be compressed is appended to a list
-            output_row[listcolumn_name].append(input_row[listcolumn_name])
+            if field != listcolumn_name:
+                row[field] = input_row[field]
+                output_row[field] = input_row[field]
+        input_dict[input_row[keyfield]] = row
+        
         output_dict[input_row[keyfield]] = output_row
+        
+    for input_row in input_dictlist:
+        print(input_row)
+        for output_row in output_dict:
+            print(output_row)
+            if input_row[keyfield] == output_dict[output_row][keyfield]:
+                output_dict[output_row][listcolumn_name].append(input_row[listcolumn_name])
 
     return output_dict
     
