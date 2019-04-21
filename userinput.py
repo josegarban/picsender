@@ -1,4 +1,5 @@
-import dbhandler 
+import dbhandler
+import os 
 
 """
 Functions to obtain user input
@@ -66,20 +67,25 @@ def choose_mode_refine (sql_filename = ""):
     mode["childfk_name"]           = ""
     mode["printinstructions"]      = None
     mode["blobfolder"]             = ""
+    mode["searchdirection"]        = ""
+    mode["searchchars"]            = 0
 
     if sql_filename == "":
         mode["sql_filename"] = ""
-        while mode["sql_filename"]           == "":
+        while mode["sql_filename"] == "":
             print("\nWhat is the name of the sql file? Please include the extension at the end.")
-            mode["sql_filename"]           = input("")
+            mode["sql_filename"] = input("")
+        while not os.path.exists(mode["sql_filename"]):
+            print("\nThis file was not found. Try again.")
+            mode["sql_filename"] = input("")
         
-    while mode["sql_parenttable"]        == "":
+    while mode["sql_parenttable"] == "":
         print("\nWhat is the name of the sql parent table?")
-        mode["sql_parenttable"]        = input("")
+        mode["sql_parenttable"] = input("")
     
-    while mode["parentdbkey_column"]     == "":
+    while mode["parentdbkey_column"] == "":
         print("\nWhat is the name of the parent table key column?")
-        mode["parentdbkey_column"]     = input("")
+        mode["parentdbkey_column"] = input("")
 
     columns = dbhandler.get_alldbcolumns(mode["sql_filename"],
                                  mode["sql_parenttable"],
@@ -88,9 +94,9 @@ def choose_mode_refine (sql_filename = ""):
     print("\nThe columns in table {0} in file {1} are:".format(mode["sql_parenttable"], mode["sql_filename"]))
     print(columns)
     
-    while mode["listcolumn_name"]        == "":
+    while mode["listcolumn_name"] == "":
         print("\nWhat is the name of the column containing a list representation?")
-        mode["listcolumn_name"]        = input("")
+        mode["listcolumn_name"] = input("")
     
     while mode["additionalcolumn_names"] == None:    
         print("\nShould other columns be copied into the new table?")
@@ -106,13 +112,13 @@ def choose_mode_refine (sql_filename = ""):
                 print("Incorrect input, please start again.")
                 quit()
     
-    while mode["separator"]              == "":    
+    while mode["separator"] == "":    
         print("\nWhat is the separator character between the columns?")
-        mode["separator"]              = input("")
+        mode["separator"] = input("")
     
     while mode["pythonic"] is None:
         print("\nDoes the list start with '[' and end in ']'? True/False")
-        mode["pythonic"]               = input("")
+        mode["pythonic"] = input("")
         if mode["pythonic"] == "True":
             mode["pythonic"] = True
             pass
@@ -123,15 +129,15 @@ def choose_mode_refine (sql_filename = ""):
             print("Incorrect input, please start again.")
             quit()
         
-    while mode["sql_childtable"]         == "":
+    while mode["sql_childtable"] == "":
         print("\nWhat is name of the new child table?")
-        mode["sql_childtable"]         = input("")
+        mode["sql_childtable"] = input("")
     
-        mode["childfk_name"]           = mode["sql_parenttable"] + mode["parentdbkey_column"] 
+        mode["childfk_name"] = mode["sql_parenttable"] + mode["parentdbkey_column"] 
 
     while mode["printinstructions"] is None:
         print("\nShould intermediate steps be printed? True/False")
-        mode["printinstructions"]      = input("")
+        mode["printinstructions"] = input("")
         if mode["printinstructions"] == "True":
             mode["printinstructions"] = True
             pass
@@ -142,9 +148,26 @@ def choose_mode_refine (sql_filename = ""):
             print("Incorrect input, please start again.")
             quit()
 
-    while mode["blobfolder"]         == "":
+    while mode["blobfolder"] == "":
         print("\nIn which folder are the attachments stored?")
-        mode["blobfolder"]         = input("")
+        mode["blobfolder"] = input("")
+        while not os.path.exists(mode["blobfolder"]):
+            print("\nThis folder was not found. Try again.")
+            mode["blobfolder"] = input("")
+
+    while mode["searchdirection"] not in ("1", "2"):
+        print("\nWill the file name search be conducted (1) from the beginning or (2) from the end of the file names?")
+        mode["searchdirection"] = input("Choose 1 or 2: ")        
+    if mode["searchdirection"] == "1": mode["searchdirection"] = "startswith"
+    elif mode["searchdirection"] == "2": mode["searchdirection"] = "endswith"        
+
+    while mode["searchchars"] == 0:
+        print("\nHow many characters will be matched during the search?")
+        try:
+            temp = input("")
+            mode["searchchars"] = int(temp)
+        except Exception:
+            print("Incorrect input, please try again.")
 
     return mode
     
@@ -169,7 +192,7 @@ def input_filename():
 def input_path():
     """
     Input: typed by user.
-    Objective: get a folder pqth.
+    Objective: get a folder path.
     Output: string.
     """
     output_string = ""

@@ -78,17 +78,23 @@ def insert_blob(blob_file,
     if not os.path.exists(sql_filename): print("File {0} does not exist.\n".format(sql_filename))
     
     else:
-        with open(blob_file, 'rb') as file:
-            ablob = file.read()
-            base = os.path.basename(blob_file)
-            afile, ext = os.path.splitext(base)
-            instruction = """INSERT INTO {0} (data, type, filename, filepath) VALUES(?, ?, ?, ?);""".format(blobtable)
-            values = (sqlite.Binary(ablob), ext, afile, base+afile+ext)
-            
-            my_cursor.execute(instruction, values)
-            if printinstructions == True: print("Instruction executed:", instruction, values)
-            output_string = output_string + instruction + str(values) + "\n"
+        try:
+            with open(blob_file, 'rb') as file:
+                ablob = file.read()
+                base = os.path.basename(blob_file)
+                afile, ext = os.path.splitext(base)
+                my_path = os.path.abspath(blob_file)
+                instruction = """INSERT INTO {0} (data, type, filename, filepath) VALUES(?, ?, ?, ?);""".format(blobtable)
+                values = (sqlite.Binary(ablob), ext, afile, my_path)
+                
+                my_cursor.execute(instruction, values)
+                if printinstructions == True: print("Instruction executed:", instruction, values)
+                output_string = output_string + instruction + str(values) + "\n"
     
+        except:
+            print("File {0} could not be opened".format(blob_file))
+            output_string = output_string + "File {0} could not be opened".format(blob_file) + "\n"
+
     # Commit the changes
     my_connector.commit()
     my_connector.close()
@@ -172,8 +178,8 @@ def insert_searchterm(criteria = "endswith",
             elif criteria == "startswith": values = (filename[:parameter-1], filename)
         
             instruction = """UPDATE {0} SET searchterm = ? WHERE filename = ?;""".format(blobtable)
-            output_string = output_string + instruction + str(values) + "\n"
             my_cursor.execute(instruction, values)
+            output_string = output_string + instruction + str(values) + "\n"
             if printinstructions == True: print("Instruction executed:", instruction, values)
     
     # Commit the changes
