@@ -33,9 +33,9 @@ def generate_longtimestamp ():
 
 ####################################################################################################
 
-def files_in_folder_byext (folder, extensions=""):
+def files_in_folder_byext (folder, extensions = ""):
     """
-    Input: folder path, list of valid extensions
+    Input: folder path, list of valid extensions (optional)
     Objective: find files of certain extensions in the same folder
     Output: list with filenames
     """

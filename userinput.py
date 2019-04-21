@@ -65,6 +65,7 @@ def choose_mode_refine (sql_filename = ""):
     mode["sql_childtable"]         = ""
     mode["childfk_name"]           = ""
     mode["printinstructions"]      = None
+    mode["blobfolder"]             = ""
 
     if sql_filename == "":
         mode["sql_filename"] = ""
@@ -128,7 +129,6 @@ def choose_mode_refine (sql_filename = ""):
     
         mode["childfk_name"]           = mode["sql_parenttable"] + mode["parentdbkey_column"] 
 
-
     while mode["printinstructions"] is None:
         print("\nShould intermediate steps be printed? True/False")
         mode["printinstructions"]      = input("")
@@ -141,6 +141,10 @@ def choose_mode_refine (sql_filename = ""):
         else:
             print("Incorrect input, please start again.")
             quit()
+
+    while mode["blobfolder"]         == "":
+        print("\nIn which folder are the attachments stored?")
+        mode["blobfolder"]         = input("")
 
     return mode
     
@@ -156,6 +160,22 @@ def input_filename():
 
     while output_string == "":
         print("Please type the filename or path. Don't forget to add the extension at the end.")
+        output_string = input("")
+
+    return output_string
+
+####################################################################################################
+
+def input_path():
+    """
+    Input: typed by user.
+    Objective: get a folder pqth.
+    Output: string.
+    """
+    output_string = ""
+
+    while output_string == "":
+        print("Please type the full path.")
         output_string = input("")
 
     return output_string

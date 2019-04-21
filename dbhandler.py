@@ -557,7 +557,7 @@ def update_dict_to_db(input_dict,
     
     # Generate report
     output_string = filegenerator.generate_timestamp() + "\n"*2 + string1 + string2 + string3
-    output_filename = sql_filename[:-7] + "_history.txt"
+    output_filename = sql_filename + "_history.txt"
     filegenerator.string_to_txt(output_filename, output_string)
     
     return None

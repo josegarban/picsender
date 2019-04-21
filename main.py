@@ -1,6 +1,6 @@
 import pprint
 import credentials
-import filegenerator, dbhandler
+import blobmgr, filegenerator, dbhandler
 from dbchild import start_child, fill_child
 from structures import listlist_to_dictdict
 from userinput import choose_mode_populate, choose_mode_refine, input_filename
@@ -76,6 +76,8 @@ def process_db(mode = ""):
     pythonic               = mode["pythonic"]
     printinstructions      = mode["printinstructions"]
     
+    blobfolder      = mode["blobfolder"]
+    
     relations = (mode["parentdbkey_column"],
                  mode["sql_parenttable"],
                  mode["sql_parenttable"]+mode["parentdbkey_column"])
@@ -96,9 +98,17 @@ def process_db(mode = ""):
                 sql_childtable,
                 childfk_name,
                 printinstructions)
-    
-    
-    
+
+    # Create the blobtable
+    blobmgr.add_blobtable(sql_filename,
+                          "blobtable",
+                          True)
+    blobmgr.insert_blobs("",
+                         blobfolder,
+                         sql_filename,
+                         "blobtable",
+                         True)
+
     return None
 
 
