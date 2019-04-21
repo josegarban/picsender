@@ -9,7 +9,7 @@ import structures
 # INSTRUCTION CREATION 
 ####################################################################################################
 
-def get_relations(field_list, table_names = ""):
+def get_relations_fromuser(field_list, table_names = ""):
     """
     Input: field list in the dictionary from where the relations will be used
             table_names (optional): list of tables in a sql database.
@@ -29,15 +29,36 @@ def get_relations(field_list, table_names = ""):
     templist[0] = input("Type the field here: ")
     print("What is the parent table to the child table that will be created?")
     templist[1] = input("Type the name here: ")
-    print("What is this field called in the parent table? Leave it blank if it is called the same in both: ")
+    print("What is this field called in the child table? Leave it blank if it is the same as in the parent table:")
     templist[2] = input("Type the name here: ")
     print("")
     
     desc = "INTEGER NOT NULL, FOREIGN KEY ({0}) REFERENCES {1}({2})".format(templist[0],
-                                                                          templist[1],
-                                                                          templist[2])
+                                                                            templist[1],
+                                                                            templist[2])
 
     return [(templist[0], desc)]
+
+####################################################################################################
+
+def get_relations_fromlist(input_list):
+    """
+    Input: field list with:
+            0: field that iwll exist in both tables
+            1: name of the parent table
+            2: name of the field called in the child table
+    Objective: define a foreign key.
+    Output: list with a tuple of the form (fieldname, referencetable_name, fieldname_in_referencetable) 
+            to be used in statements such as:
+            "id integer NOT NULL,
+                FOREIGN KEY (id) REFERENCES parent_table(id)".
+    """
+    
+    desc = "INTEGER NOT NULL, FOREIGN KEY ({0}) REFERENCES {1}({2})".format(input_list[0],
+                                                                            input_list[1],
+                                                                            input_list[2])
+
+    return [(input_list[0], desc)]
 
 ####################################################################################################
 
@@ -54,7 +75,7 @@ def tuplists_merge(tuplist1, tuplist2="", mergeby1 = 0, mergeby2 = 0,
     Output: field list containing tuples adding other characteristics or keywords from relations_list
     """
     output_tuplist = []
-    if tuplist2 == "" : tuplist2 = get_relations(tuplist1)
+    if tuplist2 == "" : tuplist2 = get_relations_fromuser(tuplist1)
     
     for tuplist1_tup in tuplist1:
         """
@@ -181,9 +202,11 @@ def start_child(sql_filename, sql_parenttable, sql_childtable, relations = ""):
                                True)
     
     if relations == "":
-        relation_tuplist = get_relations(parent_columns)
+        # User will be prompted for the foreign key
+        relation_tuplist = get_relations_fromuser(parent_columns)
     else:
-        relation_tuplist = relations
+        # Instruction for the foreign key will be generated from an already performed input
+        relation_tuplist = get_relations_fromlist(relations) 
 
     create_childtable(input_dict,
                       relation_tuplist,
