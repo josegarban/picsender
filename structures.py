@@ -389,3 +389,31 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
                 output_dict[counter]       = member_row
             
     return output_dict
+
+####################################################################################################
+
+def compress_dictlist (input_dictlist, listcolumn_name, keyfield = "id"):
+    """
+    Input: list of dictionaries,
+            fieldname consisting of strings,
+            another field used as id
+    Objective: listcolumn_name will be converted into a list (all other fields should be the same).
+    Output: nested dictionaries
+    """
+    output_dict = {}
+    
+    for input_row in input_dictlist:
+        output_row = {}
+        output_row[listcolumn_name] = []
+        for field in input_row.keys():
+            # Fields other than the field to be compressed are added
+            if field != listcolumn_name: output_row[field] = input_row[field]
+            # The field to be compressed is appended to a list
+            output_row[listcolumn_name].append(input_row[listcolumn_name])
+        output_dict[input_row[keyfield]] = output_row
+
+    return output_dict
+    
+    
+    
+    
