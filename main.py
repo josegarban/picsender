@@ -62,54 +62,39 @@ def process_db(mode = ""):
     """
     if mode == "": mode = choose_mode_refine() # Usual state of affairs
     
-    sql_filename           = mode["sql_filename"]
-    sql_table              = mode["sql_parenttable"]
-    dbkey_column           = mode["parentdbkey_column"]
-
-    childfk_name           = mode["childfk_name"]
-    additionalcolumn_names = mode["additionalcolumn_names"]
-    
-    sql_childtable         = mode["sql_childtable"]
-    
-    listcolumn_name        = mode["listcolumn_name"]
-    separator              = mode["separator"]
-    pythonic               = mode["pythonic"]
-    printinstructions      = mode["printinstructions"]
-    
-    blobfolder      = mode["blobfolder"]
-    
     relations = (mode["parentdbkey_column"],
                  mode["sql_parenttable"],
-                 mode["sql_parenttable"]+mode["parentdbkey_column"])
+                 mode["sql_parenttable"] + mode["parentdbkey_column"])
     
     # Create the child table and generate a report
-    start_child(sql_filename,
-                sql_table,
-                sql_childtable,
+    start_child(mode["sql_filename"],
+                mode["sql_parenttable"],
+                mode["sql_childtable"],
                 relations)
     
-    fill_child (listcolumn_name,
-                additionalcolumn_names,
-                separator,
-                pythonic,
-                sql_filename,
-                sql_table,
-                dbkey_column,
-                sql_childtable,
-                childfk_name,
-                printinstructions)
+    fill_child (mode["listcolumn_name"],
+                mode["additionalcolumn_names"],
+                mode["separator"],
+                mode["pythonic"],
+                mode["sql_filename"],
+                mode["sql_parenttable"],
+                mode["parentdbkey_column"],
+                mode["sql_childtable"],
+                mode["childfk_name"],
+                mode["printinstructions"])
 
     # Create the blobtable
-    blobmgr.add_blobtable(sql_filename,
+    blobmgr.add_blobtable(mode["sql_filename"],
                           "blobtable",
-                          True)
+                          mode["printinstructions"])
     blobmgr.insert_blobs("",
-                         blobfolder,
-                         sql_filename,
+                         mode["blobfolder"],
+                         mode["sql_filename"],
                          "blobtable",
-                         True)
+                         mode["printinstructions"])
 
     return None
 
 
 if __name__ == '__main__': process_db()
+
