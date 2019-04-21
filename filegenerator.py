@@ -33,7 +33,7 @@ def generate_longtimestamp ():
 
 ####################################################################################################
 
-def files_in_folder_byext (folder, extensions):
+def files_in_folder_byext (folder, extensions=""):
     """
     Input: folder path, list of valid extensions
     Objective: find files of certain extensions in the same folder
@@ -49,17 +49,30 @@ def files_in_folder_byext (folder, extensions):
 
     # Get a list with just html file names
     output_list  = []
-    for extension in extensions:
-        for file in files: 
-            if   file.endswith(extension): output_list.append(file)
-    if len (output_list) == 0:
-        print("No file with the searched extensions were found.")
-        print("")
+    
+    if extensions != "":
+        for extension in extensions:
+            for file in files: 
+                if   file.endswith(extension): output_list.append(file)
+        if len (output_list) == 0:
+            print("No file with the searched extensions were found.")
+            print("")
+        else:
+            print("The following files with the searched extensions were found:")
+            pprint.pprint(output_list)
+            print("")
     else:
-        print("The following files with the searched extensions were found:")
-        pprint.pprint(output_list)
-        print("")
-        
+        for file in files: 
+            output_list.append(file)
+        if len (output_list) == 0:
+            print("No files were found.")
+            print("")
+        else:
+            print("The following files were found:")
+            pprint.pprint(output_list)
+            print("")
+
+
     return output_list
 
 ####################################################################################################
