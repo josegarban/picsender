@@ -62,21 +62,29 @@ def process_db(mode = ""):
     """
     if mode == "": mode = choose_mode_refine() # Usual state of affairs
     
-    listcolumn_name        = mode["listcolumn_name"]
-    additionalcolumn_names = mode["additionalcolumn_names"]
-    separator              = mode["separator"]
-    pythonic               = mode["pythonic"]
     sql_filename           = mode["sql_filename"]
     sql_table              = mode["sql_parenttable"]
     dbkey_column           = mode["parentdbkey_column"]
-    sql_childtable         = mode["sql_childtable"]
+
     childfk_name           = mode["childfk_name"]
+    additionalcolumn_names = mode["additionalcolumn_names"]
+    
+    sql_childtable         = mode["sql_childtable"]
+    
+    listcolumn_name        = mode["listcolumn_name"]
+    separator              = mode["separator"]
+    pythonic               = mode["pythonic"]
     printinstructions      = mode["printinstructions"]
+    
+    relations = (mode["parentdbkey_column"],
+                 mode["sql_parenttable"],
+                 mode["sql_parenttable"]+mode["parentdbkey_column"])
     
     # Create the child table and generate a report
     start_child(sql_filename,
-                  sql_table,
-                  sql_childtable)
+                sql_table,
+                sql_childtable,
+                relations)
     
     fill_child (listcolumn_name,
                 additionalcolumn_names,

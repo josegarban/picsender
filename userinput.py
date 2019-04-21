@@ -126,9 +126,7 @@ def choose_mode_refine (sql_filename = ""):
         print("\nWhat is name of the new child table?")
         mode["sql_childtable"]         = input("")
     
-    while mode["childfk_name"]           == "":
-        print("\nWhat is the name of the foreign key to relate child and parent tables?")
-        mode["childfk_name"]           = input("")
+        mode["childfk_name"]           = mode["sql_parenttable"] + mode["parentdbkey_column"] 
 
 
     while mode["printinstructions"] is None:

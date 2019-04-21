@@ -4,6 +4,7 @@ Sqlite functions to create a child table to a parent table in the database
 
 import dbhandler
 import structures
+from filegenerator import string_to_txt
 
 ####################################################################################################
 # INSTRUCTION CREATION 
@@ -33,11 +34,11 @@ def get_relations_fromuser(field_list, table_names = ""):
     templist[2] = input("Type the name here: ")
     print("")
     
-    desc = "INTEGER NOT NULL, FOREIGN KEY ({0}) REFERENCES {1}({2})".format(templist[0],
-                                                                            templist[1],
-                                                                            templist[2])
+    desc = "INTEGER NOT NULL, FOREIGN KEY ({0}) REFERENCES {1}({2}) ON UPDATE CASCADE".format(templist[2],
+                                                                                              templist[1],
+                                                                                              templist[0])
 
-    return [(templist[0], desc)]
+    return [(templist[2], desc)]
 
 ####################################################################################################
 
@@ -54,11 +55,11 @@ def get_relations_fromlist(input_list):
                 FOREIGN KEY (id) REFERENCES parent_table(id)".
     """
     
-    desc = "INTEGER NOT NULL, FOREIGN KEY ({0}) REFERENCES {1}({2})".format(input_list[0],
-                                                                            input_list[1],
-                                                                            input_list[2])
+    desc = "INTEGER NOT NULL, FOREIGN KEY ({0}) REFERENCES {1}({2}) ON UPDATE CASCADE".format(input_list[2],
+                                                                                              input_list[1],
+                                                                                              input_list[0])
 
-    return [(input_list[0], desc)]
+    return [(input_list[2], desc)]
 
 ####################################################################################################
 
@@ -347,7 +348,7 @@ def fill_child(listcolumn_name,
     
     # Generate report
     output_filename = sql_filename + "_history.txt"
-    filegenerator.string_to_txt(output_filename, output_string)
+    string_to_txt(output_filename, output_string)
     
     return output_string
 
