@@ -38,17 +38,14 @@ def populate_db(mode = ""):
 
     if  mode["outputtype"][0] == "current.sqlite":
         filename = mode["outputtype"][1]
-        results_mod = results
-        dbhandler.update_dict_to_db(results_mod, filename, "Processed_infofile", "id", True)
+        pprint.pprint(results)
+        dbhandler.update_dict_to_db(results, filename, "rawdata", "id", True)
 
     elif mode["outputtype"][0] == "fresh.sqlite":
         filename = mode["outputtype"][1] + "_" + timestamp + ".sqlite" 
-        results_mod = results
-        print("#"*100)
-        pprint.pprint(results_mod)
-        print("#"*100)
-        dbhandler.create_table(results_mod, filename, "Processed_infofile", True)        
-        dbhandler.add_dbrows(results_mod, filename, "Processed_infofile", "id", True)
+        pprint.pprint(results)
+        dbhandler.create_table(results, filename, "rawdata", True)        
+        dbhandler.add_dbrows(results, filename, "rawdata", "id", True)
 
     return results
 
