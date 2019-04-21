@@ -42,7 +42,7 @@ def populate_db(mode = ""):
         dbhandler.update_dict_to_db(results, filename, "rawdata", "id", True)
 
     elif mode["outputtype"][0] == "fresh.sqlite":
-        filename = mode["outputtype"][1] + "_" + timestamp + ".sqlite" 
+        filename = mode["outputtype"][1] + ".sqlite" 
         pprint.pprint(results)
         dbhandler.create_table(results, filename, "rawdata", True)        
         dbhandler.add_dbrows(results, filename, "rawdata", "id", True)
@@ -89,9 +89,17 @@ def process_db(mode = ""):
                          mode["sql_filename"],
                          "blobtable",
                          mode["printinstructions"])
+    blobmgr.insert_searchterm(mode["searchdirection"],
+                              mode["searchchars"],
+                              mode["sql_filename"],
+                              "blobtable",
+                              "id",
+                              mode["printinstructions"])
 
     return None
 
 
-if __name__ == '__main__': process_db()
+if __name__ == '__main__':
+    #populate_db()
+    process_db()
 
