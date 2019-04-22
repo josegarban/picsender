@@ -100,6 +100,6 @@ def process_db(mode = ""):
 
 
 if __name__ == '__main__':
-    #populate_db()
+    populate_db()
     process_db()
-
+    
