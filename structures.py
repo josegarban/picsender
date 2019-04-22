@@ -420,9 +420,7 @@ def compress_dictlist (input_dictlist, listcolumn_name, keyfield = "id"):
         output_dict[input_row[keyfield]] = output_row
         
     for input_row in input_dictlist:
-        print(input_row)
         for output_row in output_dict:
-            print(output_row)
             if input_row[keyfield] == output_dict[output_row][keyfield]:
                 output_dict[output_row][listcolumn_name].append(input_row[listcolumn_name])
 
