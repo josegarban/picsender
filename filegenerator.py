@@ -79,6 +79,23 @@ def files_in_folder_byext (folder, extensions = ""):
 # READ FILES
 ####################################################################################################
 
+def txt_to_string(filename, strip=False):
+    """
+    Input: txt filename
+    Output: list
+    """
+    output_string = ""
+    print("  Reading file {0}...".format(filename))
+    
+    with open(filename, "r") as my_file:
+        for line in my_file:
+            if strip == True: line = line.rstrip()
+            if strip == False: line = line
+            output_string = output_string + str(line)
+
+    return output_string
+
+####################################################################################################
 def txt_to_list(filename):
     """
     Input: txt filename
@@ -120,7 +137,7 @@ def file_to_string (filename):
 
     except:
         print("\n    Failed to open {0}.\n".format(filename))
-        
+    print("output", output_string)        
     return output_string  
 
 ####################################################################################################
