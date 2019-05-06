@@ -58,11 +58,13 @@ def add_blobtable(sql_filename = "",
 def insert_blob(blob_file,
                 sql_filename = "",
                 blobtable = "blobtable",
+                addblobs = False,
                 printinstructions = True):
     """
     Input: blob filename,
             .sqlite where the file will be saved,
             table where the file will be saved,
+            parameter to specify whether blobs should be saved into the .sqlite database,
             printinstructions will let some intermediate steps to be reported on-screen.
     Objective: insert a blob file into a .sqlite file table.
     Output: None
@@ -80,12 +82,17 @@ def insert_blob(blob_file,
     else:
         try:
             with open(blob_file, 'rb') as file:
-                ablob = file.read()
+                if addblobs == False:
+                    my_blob = None
+                else:
+                    ablob = file.read()
+                    my_blob = sqlite.Binary(ablob)
+                
                 base = os.path.basename(blob_file)
                 afile, ext = os.path.splitext(base)
                 my_path = os.path.abspath(blob_file)
                 instruction = """INSERT INTO {0} (data, type, filename, filepath) VALUES(?, ?, ?, ?);""".format(blobtable)
-                values = (sqlite.Binary(ablob), ext, afile, my_path)
+                values = (my_blob, ext, afile, my_path)
                 
                 my_cursor.execute(instruction, values)
                 if printinstructions == True: print("Instruction executed:", instruction, values)
@@ -111,12 +118,14 @@ def insert_blobs(extensions,
                  folder = "",
                  sql_filename = "",
                  blobtable = "blobtable",
+                 addblobs = False,
                  printinstructions = True):
     """
     Input: list of valid extensions,
             blob path where the blob files are found (if left empty the same path will be used),
             .sqlite where the file will be saved,
             table where the file will be saved,
+            parameter to specify whether blobs should be saved into the .sqlite database,
             printinstructions will let some intermediate steps to be reported on-screen.
     Objective: insert several blob files into a .sqlite file table.
     Output: None
@@ -134,6 +143,7 @@ def insert_blobs(extensions,
         insert_blob(folder+file,
                     sql_filename,
                     blobtable,
+                    addblobs,
                     printinstructions)
         
     
