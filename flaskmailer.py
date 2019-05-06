@@ -41,11 +41,12 @@ def flaskmailer(person):
         if   person["gender"] == "M": salutation = "Estimado"
         elif person["gender"] == "F": salutation = "Estimada"
         
-        msg = Message(subject="Hello",
+        
+        msg = Message(subject="¡Fotos de perfil para iniciar tu vida profesional!",
                       sender=app.config.get("MAIL_USERNAME"),
                       recipients=person["email"]
                       )
-        msg.html = txt_to_string("template.html", False).replace("{0}",
+        msg.html= txt_to_string("emailtemplate.html", False).replace("{0}",
                                                                  salutation).replace("{1}",
                                                                                      person["firstname"])
         for attachment in person["attachments"]:
