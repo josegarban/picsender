@@ -40,11 +40,12 @@ def strspaces_to_simplelist(input_string, separator = " "):
     Objective: converts a string representation of a list into a list. Can be used for non-pythonic list representations.
     Output: a list.
     """
-    
-    if separator not in input_string: return [input_string]
+    if input_string is None: pass
     else:
-        output_list = list(input_string.split(separator))
-        return output_list
+        if separator not in input_string: return [input_string]
+        else:
+            output_list = list(input_string.split(separator))
+            return output_list
 
 ####################################################################################################
 # FUNCTIONS TO COMPARE LISTS AND DICTIONARIES
@@ -368,8 +369,9 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
         length_i = 0 # Counter up to the length of the input dictionary
         length_o = 0 # Counter up to the length of the output dictionary
         while length_i < len(keys):
-            length_o += len(input_dict[keys[length_i]][listcolumn_name])
-            length_i += 1
+            if input_dict[keys[length_i]][listcolumn_name] is not None: # Prevent empty strings
+                length_o += len(input_dict[keys[length_i]][listcolumn_name])
+                length_i += 1
         
         for i in list(range(len(keys))):
             outer_key = keys[i]                            
