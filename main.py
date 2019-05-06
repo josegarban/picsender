@@ -84,11 +84,12 @@ def process_db(mode = ""):
     blobmgr.add_blobtable(mode["sql_filename"],
                           "blobtable",
                           mode["printinstructions"])
-    blobmgr.insert_blobs("",
-                         mode["blobfolder"],
-                         mode["sql_filename"],
-                         "blobtable",
-                         mode["printinstructions"])
+    if mode["saveblobs"] == True:
+        blobmgr.insert_blobs("",
+                             mode["blobfolder"],
+                             mode["sql_filename"],
+                             "blobtable",
+                             mode["printinstructions"])
     blobmgr.insert_searchterm(mode["searchdirection"],
                               mode["searchchars"],
                               mode["sql_filename"],
