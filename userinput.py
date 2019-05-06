@@ -69,6 +69,7 @@ def choose_mode_refine (sql_filename = ""):
     mode["blobfolder"]             = ""
     mode["searchdirection"]        = ""
     mode["searchchars"]            = 0
+    mode["saveblobs"]              = None
 
     if sql_filename == "":
         mode["sql_filename"] = ""
@@ -117,12 +118,12 @@ def choose_mode_refine (sql_filename = ""):
         mode["separator"] = input("")
     
     while mode["pythonic"] is None:
-        print("\nDoes the list start with '[' and end in ']'? True/False")
+        print("\nDoes the list start with '[' and end in ']'? Y/N")
         mode["pythonic"] = input("")
-        if mode["pythonic"] == "True":
+        if mode["pythonic"] in ("Y", "y"):
             mode["pythonic"] = True
             pass
-        elif mode["pythonic"] == "False":
+        elif mode["pythonic"] in ("N", "n"):
             mode["pythonic"] = False
             pass
         else:
@@ -136,12 +137,12 @@ def choose_mode_refine (sql_filename = ""):
         mode["childfk_name"] = mode["sql_parenttable"] + mode["parentdbkey_column"] 
 
     while mode["printinstructions"] is None:
-        print("\nShould intermediate steps be printed? True/False")
+        print("\nShould intermediate steps be printed? Y/N")
         mode["printinstructions"] = input("")
-        if mode["printinstructions"] == "True":
+        if mode["printinstructions"] in ("Y", "y"):
             mode["printinstructions"] = True
             pass
-        elif mode["printinstructions"] == "False":
+        elif mode["printinstructions"] in ("N", "n"):
             mode["printinstructions"] = False
             pass
         else:
@@ -154,6 +155,20 @@ def choose_mode_refine (sql_filename = ""):
         while not os.path.exists(mode["blobfolder"]):
             print("\nThis folder was not found. Try again.")
             mode["blobfolder"] = input("")
+
+    while mode["saveblobs"] is None:
+        print("\nShould attachments be integrally copied? Y/N")
+        print("\nIf the attachments are large, copying them may take a while...")
+        mode["saveblobs"] = input("")
+        if mode["saveblobs"] in ("Y", "y"):
+            mode["saveblobs"] = True
+            pass
+        elif mode["saveblobs"] in ("N", "n"):
+            mode["saveblobs"] = False
+            pass
+        else:
+            print("Incorrect input, please start again.")
+            quit()
 
     while mode["searchdirection"] not in ("1", "2"):
         print("\nWill the file name search be conducted (1) from the beginning or (2) from the end of the file names?")
@@ -168,7 +183,8 @@ def choose_mode_refine (sql_filename = ""):
             mode["searchchars"] = int(temp)
         except Exception:
             print("Incorrect input, please try again.")
-
+    
+    
     return mode
     
 ####################################################################################################
