@@ -297,25 +297,29 @@ def fill_child(listcolumn_name,
     parent_dict = dbhandler.get_alldbrows(sql_filename,
                                           sql_table,
                                           dbkey_column,
-                                          False)
+                                          printinstructions)
     
     # Get the column names to be copied: if none are selected, all columns will be copied
     if additionalcolumn_names == "":
         additionalcolumn_names = dbhandler.get_alldbcolumns(sql_filename,
                                                             sql_table,
                                                             dbkey_column,
-                                                            False)
+                                                            printinstructions)
 
     # Get the values to be copied in the new table
+    if printinstructions == True: print("\nDictionary for child table is:\n")
     child_dict = parse_childvalues(listcolumn_name,
                                    parent_dict,
                                    separator,
                                    pythonic,
                                    printinstructions)
+    if printinstructions == True: print(child_dict)
     
+    if printinstructions == True: print("\nExpanded dictionary for child table is:\n")
     expanded_child_dict = structures.expand_dict(child_dict,
                                                  listcolumn_name,
                                                  childfk_name)
+    if printinstructions == True: print(expanded_child_dict)
 
     # Open the database and get the table name if none has been set
     my_connector  = dbhandler.create_connector(sql_filename)

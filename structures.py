@@ -371,7 +371,12 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
         while length_i < len(keys):
             if input_dict[keys[length_i]][listcolumn_name] is not None: # Prevent empty strings
                 length_o += len(input_dict[keys[length_i]][listcolumn_name])
-                length_i += 1
+            else:
+                # Find any None values where there should be lists and convert them into [None]
+                input_dict[keys[length_i]][listcolumn_name] = [None]
+                length_o += 1
+            length_i += 1
+        
         
         for i in list(range(len(keys))):
             outer_key = keys[i]                            
@@ -380,7 +385,7 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
                 member_row = {}
                 for inner_key in input_dict[outer_key]:
                     member_row[inner_key] = input_dict[outer_key][inner_key]
-        
+            
                 # The list is replaced by an element within it
                 member_row[listcolumn_name] = input_dict[outer_key][listcolumn_name][k]
                 # The old key is moved to within the dictionary row
@@ -388,7 +393,9 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
                 # The output_dict will have keys function of outer_key and list element
                 counter = sum([len(input_dict[keys[j]][listcolumn_name]) for j in list(range(i))]) + k
                 # counter = n*i + k works only if all lists have length n                
-                output_dict[counter]       = member_row
+    
+                # counter = n*i + k works only if all lists have length n                
+                output_dict[counter]       = member_row    
             
     return output_dict
 
