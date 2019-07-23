@@ -81,8 +81,10 @@ def choose_mode_refine (sql_filename = ""):
             mode["sql_filename"] = input("")
         
     while mode["sql_parenttable"] == "":
-        print("\nWhat is the name of the sql parent table?")
+        print("\nWhat is the name of the sql parent table? Leave input blank for default: 'rawdata'.")
         mode["sql_parenttable"] = input("")
+        if mode["sql_parenttable"] == "":
+            mode["sql_parenttable"] = 'rawdata'
     
     while mode["parentdbkey_column"] == "":
         print("\nWhat is the name of the parent table key column?")
@@ -131,7 +133,7 @@ def choose_mode_refine (sql_filename = ""):
             quit()
         
     while mode["sql_childtable"] == "":
-        print("\nWhat is name of the new child table?")
+        print("\nWhat is the name of the new child table? Default name: 'child'.")
         mode["sql_childtable"] = input("")
     
         mode["childfk_name"] = mode["sql_parenttable"] + mode["parentdbkey_column"] 
@@ -172,9 +174,11 @@ def choose_mode_refine (sql_filename = ""):
 
     while mode["searchdirection"] not in ("1", "2"):
         print("\nWill the file name search be conducted (1) from the beginning or (2) from the end of the file names?")
+        print("Default: 2.")
         mode["searchdirection"] = input("Choose 1 or 2: ")        
     if mode["searchdirection"] == "1": mode["searchdirection"] = "startswith"
-    elif mode["searchdirection"] == "2": mode["searchdirection"] = "endswith"        
+    elif mode["searchdirection"] == "2": mode["searchdirection"] = "endswith"
+    else: mode["searchdirection"] = "endswith"
 
     while mode["searchchars"] == 0:
         print("\nHow many characters will be matched during the search?")

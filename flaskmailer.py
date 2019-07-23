@@ -44,7 +44,7 @@ def flaskmailer(person):
         
         msg = Message(subject="¡Fotos de perfil para iniciar tu vida profesional!",
                       sender=app.config.get("MAIL_USERNAME"),
-                      recipients=person["email"]
+                      recipients=person["email"]                      
                       )
         msg.html= txt_to_string("emailtemplate.html", False).replace("{0}",
                                                                  salutation).replace("{1}",

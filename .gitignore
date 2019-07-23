@@ -1,0 +1,9 @@
+credentials.txt
+*.ods
+*.xls
+*.xlsx
+*.sqlite*
+*.db
+*.txt
+*lock*
+emailtemplate.html
