@@ -7,5 +7,5 @@ credentials.txt
 *.txt
 *lock*
 emailtemplate.html
-Fotos
+Fotos*
 __pycache__
