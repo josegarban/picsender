@@ -26,7 +26,7 @@ def print_dictdescription(input_dict, dictname = "dictionary", printinstructions
 def str_to_simplelist(string):
     """
     Input: string with a pythonic representation of a list.
-    Objective: converts a string representation of a list into a list. 
+    Objective: converts a string representation of a list into a list.
     Output: list
     """
     string = string [1:-1].replace(" ", "").replace('"', "").replace("'", "")
@@ -290,7 +290,7 @@ def listlist_to_dictdict (input_list, fieldname_list = "", keyfield = "id"):
 
 
 ####################################################################################################
-# FUNCTIONS TO ABRIDGE DATA STRUCTURES 
+# FUNCTIONS TO ABRIDGE DATA STRUCTURES
 ####################################################################################################
 
 def tuplist_sieve(tup_list, wantedtup_list = "", position = 0):
@@ -304,7 +304,7 @@ def tuplist_sieve(tup_list, wantedtup_list = "", position = 0):
     """
     output_list = []
     if wantedtup_list == "": wantedtup_list = tup_list # If wantedtup_list is empty, output = input
-    
+
     for tup in tup_list:
         if tup[position] in wantedtup_list:
             output_list.append(tup)
@@ -322,7 +322,7 @@ def keep_members_inlist(input_list, input_choice = ""):
     print("The input list consists of the following elements: ")
     tuples = [(input_list.index(element), element) for element in input_list]
     print(input_list)
-    
+
     if input_choice == "":
         print("\nWhich do you want to keep? Type the relevant indices separated by commas.")
         choice = input("")
@@ -337,19 +337,19 @@ def keep_members_inlist(input_list, input_choice = ""):
     else:
         print("\nThe following elements will be kept, if applicable:", input_choice)
         output_list = [x for x in input_list if x in input_choice] # Nothing has to be converted to numbers
-    
+
     if len(output_list) == 0:
         print("The abridged list is empty. Possibly your desired elements are not in the original list:")
         print(output_list)
     else:
         print("The abridged list contains the following members:")
         print(output_list, "")
-    
+
     return output_list
 
 
 ####################################################################################################
-# FUNCTIONS TO EXPAND DATA STRUCTURES 
+# FUNCTIONS TO EXPAND DATA STRUCTURES
 ####################################################################################################
 
 def expand_dict (input_dict, listcolumn_name, oldkey):
@@ -357,13 +357,13 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
     Input: dictionary,
             fieldname consisting of lists or tuples,
             name of the key column in output_dict[newkey][?] into which the old key will be copied.
-            
+
     Objective: if there is a column whose values are lists, the records in the dictionary will be multiplied.
     Output: dictionary
     """
     output_dict = {}
     keys = list(input_dict.keys())
-    
+
     # If parent_dict is a nested dictionary
     if type(input_dict[keys[0]]) is dict:
         length_i = 0 # Counter up to the length of the input dictionary
@@ -376,27 +376,27 @@ def expand_dict (input_dict, listcolumn_name, oldkey):
                 input_dict[keys[length_i]][listcolumn_name] = [None]
                 length_o += 1
             length_i += 1
-        
-        
+
+
         for i in list(range(len(keys))):
-            outer_key = keys[i]                            
+            outer_key = keys[i]
             # Length of the list to be expanded
-            for k in list(range(len(input_dict[outer_key][listcolumn_name]))): 
+            for k in list(range(len(input_dict[outer_key][listcolumn_name]))):
                 member_row = {}
                 for inner_key in input_dict[outer_key]:
                     member_row[inner_key] = input_dict[outer_key][inner_key]
-            
+
                 # The list is replaced by an element within it
                 member_row[listcolumn_name] = input_dict[outer_key][listcolumn_name][k]
                 # The old key is moved to within the dictionary row
                 member_row[oldkey]          = outer_key
                 # The output_dict will have keys function of outer_key and list element
                 counter = sum([len(input_dict[keys[j]][listcolumn_name]) for j in list(range(i))]) + k
-                # counter = n*i + k works only if all lists have length n                
-    
-                # counter = n*i + k works only if all lists have length n                
-                output_dict[counter]       = member_row    
-            
+                # counter = n*i + k works only if all lists have length n
+
+                # counter = n*i + k works only if all lists have length n
+                output_dict[counter]       = member_row
+
     return output_dict
 
 ####################################################################################################
@@ -425,16 +425,12 @@ def compress_dictlist (input_dictlist, listcolumn_name, keyfield = "id"):
                 row[field] = input_row[field]
                 output_row[field] = input_row[field]
         input_dict[input_row[keyfield]] = row
-        
+
         output_dict[input_row[keyfield]] = output_row
-        
+
     for input_row in input_dictlist:
         for output_row in output_dict:
             if input_row[keyfield] == output_dict[output_row][keyfield]:
                 output_dict[output_row][listcolumn_name].append(input_row[listcolumn_name])
 
     return output_dict
-    
-    
-    
-    

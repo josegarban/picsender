@@ -1,5 +1,5 @@
 import dbhandler
-import os 
+import os
 
 """
 Functions to obtain user input
@@ -74,21 +74,25 @@ def choose_mode_refine (sql_filename = ""):
     if sql_filename == "":
         mode["sql_filename"] = ""
         while mode["sql_filename"] == "":
-            print("\nWhat is the name of the sql file? Please include the extension at the end.")
+            print("\nWhat is the name of the sql file? Please include the extension at the end. Leave input blank for default: 'output.sqlite'")
             mode["sql_filename"] = input("")
+            if mode["sql_filename"] == "":
+                mode["sql_filename"] = "output.sqlite"
         while not os.path.exists(mode["sql_filename"]):
             print("\nThis file was not found. Try again.")
             mode["sql_filename"] = input("")
-        
+
     while mode["sql_parenttable"] == "":
         print("\nWhat is the name of the sql parent table? Leave input blank for default: 'rawdata'.")
         mode["sql_parenttable"] = input("")
         if mode["sql_parenttable"] == "":
             mode["sql_parenttable"] = 'rawdata'
-    
+
     while mode["parentdbkey_column"] == "":
-        print("\nWhat is the name of the parent table key column?")
+        print("\nWhat is the name of the parent table key column? Leave input blank for default: 'id'")
         mode["parentdbkey_column"] = input("")
+        if(mode["parentdbkey_column"]) == "":
+            mode["parentdbkey_column"] = "id"
 
     columns = dbhandler.get_alldbcolumns(mode["sql_filename"],
                                  mode["sql_parenttable"],
@@ -96,16 +100,16 @@ def choose_mode_refine (sql_filename = ""):
                                  False)
     print("\nThe columns in table {0} in file {1} are:".format(mode["sql_parenttable"], mode["sql_filename"]))
     print(columns)
-    
+
     while mode["listcolumn_name"] == "":
         print("\nWhat is the name of the column containing a list representation?")
         mode["listcolumn_name"] = input("")
-    
-    while mode["additionalcolumn_names"] == None:    
+
+    while mode["additionalcolumn_names"] == None:
         print("\nShould other columns be copied into the new table?")
         print("Insert their names separated by commas or leave the input empty to include all columns.")
         additionalcolumns = input("")
-        
+
         if additionalcolumns == "":
             mode["additionalcolumn_names"] = columns
         else:
@@ -114,11 +118,11 @@ def choose_mode_refine (sql_filename = ""):
             except Exception:
                 print("Incorrect input, please start again.")
                 quit()
-    
-    while mode["separator"] == "":    
+
+    while mode["separator"] == "":
         print("\nWhat is the separator character between the columns?")
         mode["separator"] = input("")
-    
+
     while mode["pythonic"] is None:
         print("\nDoes the list start with '[' and end in ']'? Y/N")
         mode["pythonic"] = input("")
@@ -131,12 +135,12 @@ def choose_mode_refine (sql_filename = ""):
         else:
             print("Incorrect input, please start again.")
             quit()
-        
+
     while mode["sql_childtable"] == "":
         print("\nWhat is the name of the new child table? Default name: 'child'.")
         mode["sql_childtable"] = input("")
-    
-        mode["childfk_name"] = mode["sql_parenttable"] + mode["parentdbkey_column"] 
+
+        mode["childfk_name"] = mode["sql_parenttable"] + mode["parentdbkey_column"]
 
     while mode["printinstructions"] is None:
         print("\nShould intermediate steps be printed? Y/N")
@@ -175,7 +179,7 @@ def choose_mode_refine (sql_filename = ""):
     while mode["searchdirection"] not in ("1", "2"):
         print("\nWill the file name search be conducted (1) from the beginning or (2) from the end of the file names?")
         print("Default: 2.")
-        mode["searchdirection"] = input("Choose 1 or 2: ")        
+        mode["searchdirection"] = input("Choose 1 or 2: ")
     if mode["searchdirection"] == "1": mode["searchdirection"] = "startswith"
     elif mode["searchdirection"] == "2": mode["searchdirection"] = "endswith"
     else: mode["searchdirection"] = "endswith"
@@ -187,10 +191,10 @@ def choose_mode_refine (sql_filename = ""):
             mode["searchchars"] = int(temp)
         except Exception:
             print("Incorrect input, please try again.")
-    
-    
+
+
     return mode
-    
+
 ####################################################################################################
 
 def input_filename():
