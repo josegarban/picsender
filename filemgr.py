@@ -103,7 +103,7 @@ def renamer2(people_list):
             if p["pic_num"] == pic_num:
                 addition = p["uni_id"] + "_" + p["firstnames"] + "_" + p ["lastnames"] + "_"
                 # Rename
-                dst = addition + ".jpg"
+                dst = addition +  pic_num + ".jpg"
                 dst = dst_folder + "/" + dst
                 os.rename(src, dst)
 
