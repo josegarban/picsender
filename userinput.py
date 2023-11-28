@@ -221,10 +221,10 @@ def input_filename():
     output_string = ""
 
     while output_string == "":
-        print("Please type the filename or path. Don't forget to add the extension at the end. Default: 'Datos/datos_prueba.xlsx'.")
+        print("Please type the filename or path. Don't forget to add the extension at the end. Default: 'Datos/datos_test.xlsx'.")
         output_string = input("")
         if output_string == "":
-            output_string = "Datos/datos_prueba.xlsx"
+            output_string = "Datos/datos_test.xlsx"
 
     return output_string
 
