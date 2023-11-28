@@ -1,0 +1,1 @@
+﻿select child.Correo, child.Sexo, child.Nombres, child.Apellidos, Blobtable.filepath from child inner join Blobtable on Blobtable.searchterm = child.Fotos

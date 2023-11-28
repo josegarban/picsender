@@ -18,6 +18,7 @@ def custom_query (instruction,
 MY_INSTRUCTION = """select child.Correo, child.Sexo, child.Nombres, child.Apellidos, Blobtable.filepath
 from child
 inner join Blobtable on Blobtable.searchterm = child.Fotos"""
+#MY_INSTRUCTION = "select * from child"
 MY_FILE = "output.sqlite"
 
 def main ():
@@ -26,7 +27,10 @@ def main ():
     instruction = "playinstruction.txt"
     file = "playfilename.txt"
 
+    print(MY_INSTRUCTION)
+    print(MY_FILE)
     query = custom_query(MY_INSTRUCTION, MY_FILE)
+    pprint.pprint(query)
     compressed = structures.compress_dictlist (query, "filepath", "Correo")
     pprint.pprint(compressed)
 

@@ -32,15 +32,21 @@ This script will get datasheets and pictures from a folder to create or update a
         print("\nHow should the output be produced?")
         print("1. Update current .sqlite database.")
         print("2. Create a fresh .sqlite database.")
+        print("Default: 2.")
         outputtype = input("Type your choice. ")
 
-    if outputtype == "1":
-        outputfile = "current.sqlite"
-        outputname = input_filename()
+        if outputtype == "1":
+            outputfile = "current.sqlite"
+            outputname = input_filename()
 
-    elif outputtype == "2":
-        outputfile = "fresh.sqlite"
-        outputname = "output"
+        elif outputtype == "2":
+            outputfile = "fresh.sqlite"
+            outputname = "output"
+        
+        else:
+            outputfile = "fresh.sqlite"
+            outputname = "output"
+            break
 
     output_dict["outputtype"] = (outputfile, outputname)
 
@@ -102,8 +108,10 @@ def choose_mode_refine (sql_filename = ""):
     print(columns)
 
     while mode["listcolumn_name"] == "":
-        print("\nWhat is the name of the column containing a list representation?")
+        print("\nWhat is the name of the column containing a list representation? Default: 'Fotos'")
         mode["listcolumn_name"] = input("")
+        if mode["listcolumn_name"] == "":
+            mode["listcolumn_name"] = 'Fotos'
 
     while mode["additionalcolumn_names"] == None:
         print("\nShould other columns be copied into the new table?")
@@ -120,11 +128,13 @@ def choose_mode_refine (sql_filename = ""):
                 quit()
 
     while mode["separator"] == "":
-        print("\nWhat is the separator character between the columns?")
+        print("\nWhat is the separator character in the items in the column containing a list representation? Default: ' '")
         mode["separator"] = input("")
+        if mode["separator"] == "":
+            mode["separator"] = ' '
 
     while mode["pythonic"] is None:
-        print("\nDoes the list start with '[' and end in ']'? Y/N")
+        print("\nDoes the list start with '[' and end in ']'? Y/N. Default: N.")
         mode["pythonic"] = input("")
         if mode["pythonic"] in ("Y", "y"):
             mode["pythonic"] = True
@@ -133,17 +143,17 @@ def choose_mode_refine (sql_filename = ""):
             mode["pythonic"] = False
             pass
         else:
-            print("Incorrect input, please start again.")
-            quit()
+            mode["pythonic"] = False
 
     while mode["sql_childtable"] == "":
         print("\nWhat is the name of the new child table? Default name: 'child'.")
         mode["sql_childtable"] = input("")
-
+        if mode["sql_childtable"] == "":
+            mode["sql_childtable"] = 'child'
         mode["childfk_name"] = mode["sql_parenttable"] + mode["parentdbkey_column"]
 
     while mode["printinstructions"] is None:
-        print("\nShould intermediate steps be printed? Y/N")
+        print("\nShould intermediate steps be printed? Y/N. Default: Y")
         mode["printinstructions"] = input("")
         if mode["printinstructions"] in ("Y", "y"):
             mode["printinstructions"] = True
@@ -152,18 +162,19 @@ def choose_mode_refine (sql_filename = ""):
             mode["printinstructions"] = False
             pass
         else:
-            print("Incorrect input, please start again.")
-            quit()
+            mode["printinstructions"] = True
 
     while mode["blobfolder"] == "":
-        print("\nIn which folder are the attachments stored?")
-        mode["blobfolder"] = input("")
+        print("\nIn which folder are the attachments stored? Default = 'Fotos_prueba'")
+        i = input("")
+        if len(i) == 0:
+            mode["blobfolder"] = 'Fotos_prueba'
         while not os.path.exists(mode["blobfolder"]):
             print("\nThis folder was not found. Try again.")
             mode["blobfolder"] = input("")
 
     while mode["saveblobs"] is None:
-        print("\nShould attachments be integrally copied? Y/N")
+        print("\nShould attachments be integrally copied? Y/N. Default: Y.")
         print("\nIf the attachments are large, copying them may take a while...")
         mode["saveblobs"] = input("")
         if mode["saveblobs"] in ("Y", "y"):
@@ -173,25 +184,29 @@ def choose_mode_refine (sql_filename = ""):
             mode["saveblobs"] = False
             pass
         else:
-            print("Incorrect input, please start again.")
-            quit()
+            mode["saveblobs"] = True
 
     while mode["searchdirection"] not in ("1", "2"):
         print("\nWill the file name search be conducted (1) from the beginning or (2) from the end of the file names?")
         print("Default: 2.")
+        default = "endswith"
         mode["searchdirection"] = input("Choose 1 or 2: ")
-    if mode["searchdirection"] == "1": mode["searchdirection"] = "startswith"
-    elif mode["searchdirection"] == "2": mode["searchdirection"] = "endswith"
-    else: mode["searchdirection"] = "endswith"
+        if mode["searchdirection"] == "1": 
+            mode["searchdirection"] = "startswith"
+        elif mode["searchdirection"] == "2": 
+            mode["searchdirection"] = "endswith"
+        else: 
+            mode["searchdirection"] = "endswith"
+            break
 
     while mode["searchchars"] == 0:
-        print("\nHow many characters will be matched during the search?")
+        print("\nHow many characters will be matched during the search?. Default: 3")
         try:
             temp = input("")
             mode["searchchars"] = int(temp)
         except Exception:
-            print("Incorrect input, please try again.")
-
+            mode["searchchars"] = 3
+            
 
     return mode
 
@@ -206,8 +221,10 @@ def input_filename():
     output_string = ""
 
     while output_string == "":
-        print("Please type the filename or path. Don't forget to add the extension at the end.")
+        print("Please type the filename or path. Don't forget to add the extension at the end. Default: 'Datos/datos_prueba.xlsx'.")
         output_string = input("")
+        if output_string == "":
+            output_string = "Datos/datos_prueba.xlsx"
 
     return output_string
 

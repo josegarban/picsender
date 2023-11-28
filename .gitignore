@@ -1,11 +1,14 @@
 credentials.txt
+output.sqlite_history.txt
 *.ods
 *.xls
-*.xlsx
 *.sqlite*
 *.db
-*.txt
 *lock*
 emailtemplate.html
-Fotos*
+*.jpg
+*.jpeg
+*.png
 __pycache__
+picsender_env
+picenv
